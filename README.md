@@ -12,4 +12,5 @@ Open project: yarn android / npx react-native run-android
 ```
 ---
 
-![alt text](https://github.com/RodrigoVila/Parcel-Delivery/blob/master/caps.png?raw=true)
+![alt text](https://github.com/RodrigoVila/Parcel-Delivery/blob/master/assets/caps.png?raw=true)
+
