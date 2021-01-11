@@ -1,8 +1,8 @@
 # Parcel Delivery React Native App (under development)
 
-App made for customer service and postmen.
-A customer can upload their tracking number and get real-time information for his package.
-After login a carrier will see a list of his packages to be delivered, can make the customer sign on canvas, save information and update order status in real time.
+Post mail/parcel tracker and carrier delivery app .
+A customer can send their tracking number and get real-time information for his package.
+After login, a carrier can see a list of packages to be delivered. Also, customer could sign on receipt, and update order status.
 
 ---
 
