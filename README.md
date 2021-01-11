@@ -7,7 +7,6 @@ After login a carrier will see a list of his packages to be delivered, can make 
 ---
 
 ## How to run 🚀
-
 1) Clone or download repo
 2) Go to repository folder `cd Parcel-Delivery`
 3) Install dependencies `yarn install` or `npm i`
