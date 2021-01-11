@@ -11,6 +11,6 @@ install dependencies: npm install / yarn install
 Open project: yarn android / npx react-native run-android
 ```
 ---
-
+## Screenshots📸
 ![alt text](https://github.com/RodrigoVila/Parcel-Delivery/blob/master/assets/caps.png?raw=true)
 
