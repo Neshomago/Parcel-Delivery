@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Order from '../../components/Order';
 import Colors from '../../constants/Colors';
-import { data } from '../../components/data';
+import { getOrders } from '../../api/mock';
 
-const Orders = () => {
+const Orders = ({ navigation }: any) => {
+  const [orders, setOrders] = useState(null);
+
+  useEffect(() => {
+    const handleUserLoadingError = (res: any) => {
+      if (res.error === 401) {
+        navigation.navigate('Login');
+      } else {
+        console.log('ELSE?????');
+      }
+    };
+
+    getOrders()
+      .then((res: any) => setOrders(res.orders))
+      .catch(handleUserLoadingError);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -14,16 +31,16 @@ const Orders = () => {
           colors={[Colors.topColor, Colors.bottomColor]}
           style={styles.linearGradient}
           start={{ x: 0.7, y: 0.3 }}>
-          {data.map((d) => (
+          {orders.map((data: any) => (
             <Order
-              key={d.orderNumber}
-              orderNumber={d.orderNumber}
-              customerName={d.customerName}
-              neighbourhood={d.neighbourhood}
-              address={d.address}
-              packagesNum={d.packagesNum}
-              latitude={d.latitude}
-              longitude={d.longitude}
+              key={data.orderNumber}
+              orderNumber={data.orderNumber}
+              customerName={data.customerName}
+              neighbourhood={data.neighbourhood}
+              address={data.address}
+              packagesNum={data.packagesNum}
+              latitude={data.latitude}
+              longitude={data.longitude}
             />
           ))}
         </LinearGradient>

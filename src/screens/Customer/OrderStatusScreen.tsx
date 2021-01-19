@@ -1,28 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Image,
-  Modal,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   View,
   TouchableHighlight,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Colors from '../../constants/Colors';
 import Constants from '../../constants/Constants';
 
-const OrderStatusScreen = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!modalVisible);
-  };
-
+const OrderStatusScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       <StatusBar
@@ -49,29 +39,15 @@ const OrderStatusScreen = () => {
             />
           </View>
           <Text style={styles.orderStatus}>RECIBIDO</Text>
-          <View style={styles.seeHistoryButton}>
-            <TouchableHighlight onPress={toggleModal}>
-              <Text style={styles.seeHistoryText}>Ver Historial</Text>
-            </TouchableHighlight>
+          <View style={styles.seeHistoryContainer}>
+            <Text
+              style={styles.seeHistoryText}
+              onPress={() => navigation.navigate('OrderHistory')}>
+              Ver Historial
+            </Text>
           </View>
         </View>
       </LinearGradient>
-      <Modal animationType="fade" visible={modalVisible}>
-        <ScrollView>
-          <View style={styles.modalContainer}>
-            <TouchableWithoutFeedback
-              style={styles.modalTouchableIcon}
-              onPress={toggleModal}>
-              <MaterialCommunityIcons
-                style={styles.modalIcon}
-                name="arrow-left-thick"
-                size={33}
-                color="black"
-              />
-            </TouchableWithoutFeedback>
-          </View>
-        </ScrollView>
-      </Modal>
     </View>
   );
 };
@@ -90,13 +66,14 @@ const styles = StyleSheet.create({
   },
 
   logoContainer: {
-    width: '100%',
+    width: '90%',
+    alignSelf: 'center',
   },
 
   logo: {
     width: '100%',
     height: 100,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
 
   orderInfo: {
@@ -132,34 +109,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  seeHistoryButton: {
-    borderColor: Colors.white,
-    borderWidth: Constants.borderWidth,
-    borderRadius: Constants.borderRadius,
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    width: '50%',
-    alignSelf: 'center',
-    overflow: 'hidden',
-    marginTop: 50,
+  seeHistoryContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
-
   seeHistoryText: {
-    fontSize: 22,
+    fontSize: 18,
     color: Colors.white,
     textAlign: 'center',
-  },
-
-  modalContainer: {
-    flex: 1,
-  },
-
-  modalTouchableIcon: {
-    padding: 16,
-  },
-
-  modalIcon: {
-    left: 5,
-    top: 5,
+    textDecorationLine: 'underline',
   },
 });

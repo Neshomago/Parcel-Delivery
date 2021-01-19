@@ -7,4 +7,5 @@ export default {
   darkText: '#000',
   inactive: '#a6a6a6',
   lightGreen: '#5cdb5c',
+  error: '#ff0033',
 };

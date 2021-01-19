@@ -1,3 +1,13 @@
+// interface Data {
+//   orderNumber: number;
+//   customerName: string;
+//   neighbourhood: string;
+//   address: string;
+//   latitude: number;
+//   longitude: number;
+//   packagesNum: number;
+// }
+
 export const data = [
   {
     orderNumber: 144132,

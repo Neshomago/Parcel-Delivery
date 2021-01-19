@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -14,6 +13,8 @@ import { useIsFocused } from '@react-navigation/native';
 import { Text, Item } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import Colors from '../../constants/Colors';
+import { login } from '../../api/authentication';
+import { setToken } from '../../api/token';
 
 function FocusAwareStatusBar(props: any) {
   const isFocused = useIsFocused();
@@ -21,10 +22,28 @@ function FocusAwareStatusBar(props: any) {
   return isFocused ? <StatusBar {...props} /> : null;
 }
 
-const Login = ({ navigation }: any) => {
+const LoginScreen = ({ navigation }: any) => {
   const [showPassword, setShowPassword] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [data, setData] = useState({ userName: '', password: '' });
 
-  const handleChange = () => {};
+  const loginUser = () => {
+    login(data.userName, data.password)
+      .then(async (res: any) => {
+        await setToken(res.auth_token);
+        navigation.navigate('Orders');
+      })
+      .catch((err) => setErrorMessage(err.message));
+  };
+
+  const logOutUser = async () => {
+    await setToken('');
+    navigation.navigate('Login');
+  };
+
+  const handleChange = ({ target: { name, value } }: any) => {
+    setData({ ...data, [name]: value });
+  };
 
   return (
     <View style={styles.container}>
@@ -46,9 +65,12 @@ const Login = ({ navigation }: any) => {
             />
             <View style={styles.inputContainer}>
               <TextInput
+                name="userName"
                 style={styles.textInput}
                 placeholder="Usuario"
                 placeholderTextColor={Colors.white}
+                value={data.userName}
+                onChange={handleChange}
               />
             </View>
           </Item>
@@ -62,11 +84,14 @@ const Login = ({ navigation }: any) => {
 
             <View style={styles.inputContainer}>
               <TextInput
+                name="password"
                 secureTextEntry={showPassword}
                 style={styles.textInput}
                 placeholder="Contraseña"
                 placeholderTextColor={Colors.white}
                 autoCorrect={false}
+                value={data.password}
+                onChange={handleChange}
               />
 
               <MaterialCommunityIcons // Show/Hide Password Icon
@@ -81,16 +106,14 @@ const Login = ({ navigation }: any) => {
           <TouchableOpacity
             style={styles.loginButtonTouchable}
             activeOpacity={1}
-            onPress={() => {
-              navigation.navigate('Orders');
-            }}>
+            onPress={loginUser}>
             <View style={styles.loginButtonContainer}>
               <Text style={styles.loginButtonText}>Login</Text>
             </View>
           </TouchableOpacity>
-          <TouchableWithoutFeedback onPress={handleChange}>
-            <Text style={styles.createAccText}>Crear cuenta</Text>
-          </TouchableWithoutFeedback>
+          {errorMessage ? (
+            <Text style={styles.errorText}>{errorMessage}</Text>
+          ) : null}
         </View>
       </LinearGradient>
     </View>
@@ -156,9 +179,15 @@ const styles = StyleSheet.create({
   createAccText: {
     color: 'white',
     paddingTop: 20,
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center',
+    textDecorationLine: 'underline',
+  },
+  errorText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: Colors.error,
   },
 });
 
-export default Login;
+export default LoginScreen;

@@ -59,14 +59,6 @@ const CustomerScreen = ({ navigation }: any) => {
               keyboardType="numeric"
               maxLength={15}
             />
-            <MaterialCommunityIcons
-              style={styles.icon}
-              name="qrcode-scan"
-              size={25}
-              onPress={() => {
-                navigation.navigate('QRCodeCustomer');
-              }}
-            />
           </View>
           <View style={styles.buttons}>
             <TouchableOpacity
@@ -82,7 +74,15 @@ const CustomerScreen = ({ navigation }: any) => {
                 navigation.navigate('QRCodeCustomer');
               }}>
               <View>
-                <Text style={styles.touchableText}>Codigo QR</Text>
+                <Text style={styles.touchableText}>Escanear codigo QR</Text>
+                <MaterialCommunityIcons
+                  style={styles.icon}
+                  name="qrcode-scan"
+                  size={25}
+                  onPress={() => {
+                    navigation.navigate('QRCodeCustomer');
+                  }}
+                />
               </View>
             </TouchableOpacity>
           </View>
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   logo: {
     width: '100%',
     height: 100,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
 
   cardContainer: {
@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
   icon: {
     position: 'absolute',
     right: 20,
-    alignSelf: 'center',
     color: Colors.white,
   },
 

@@ -5,16 +5,18 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Colors from '../constants/Colors';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const QRCode = () => {
+const QRCode = ({ navigation }: any) => {
   const [isTorchOn, setTorchOn] = useState(false);
   const onSuccess = (e) => {
     Alert.alert(e.data);
@@ -32,7 +34,7 @@ const QRCode = () => {
       customMarker={
         <View style={styles.rectangleContainer}>
           <View style={styles.topOverlay}>
-            <Text style={{ fontSize: 30, color: 'white' }}>QR SCANNER</Text>
+            <Text style={{ fontSize: 30, color: 'white' }}>ESCANNER QR</Text>
           </View>
 
           <View style={{ flexDirection: 'row' }}>
@@ -52,10 +54,16 @@ const QRCode = () => {
           : RNCamera.Constants.FlashMode.off
       }
       topContent={
-        <Text style={styles.centerText}>
-          Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text>
-          on your computer and scan the QR code.
-        </Text>
+        <TouchableWithoutFeedback
+          style={styles.buttonTouchable}
+          onPress={() => navigation.goBack()}>
+          <MaterialCommunityIcons
+            style={styles.icon}
+            name="arrow-left-thick"
+            size={33}
+            color={Colors.white}
+          />
+        </TouchableWithoutFeedback>
       }
       bottomContent={
         <TouchableOpacity style={styles.buttonTouchable}>
@@ -82,31 +90,16 @@ const scanBarHeight = SCREEN_WIDTH * 0.0025; //this is equivalent to 1 from a 39
 const scanBarColor = '#22ff00';
 
 const styles = StyleSheet.create({
-  centerText: {
-    flex: 1,
-    fontSize: 18,
-    padding: 32,
-    color: '#777',
-  },
-  textBold: {
-    color: '#000',
-  },
-  buttonText: {
-    fontSize: 21,
-    color: 'rgb(0,122,255)',
-  },
-  buttonTouchable: {
-    padding: 16,
-  },
+  buttonTouchable: {},
   icon: {
-    top: 100,
-    right: 100,
+    position: 'absolute',
+    top: 10,
+    left: 10,
     zIndex: 99,
   },
   rectangleContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: 'transparent',
   },
 
