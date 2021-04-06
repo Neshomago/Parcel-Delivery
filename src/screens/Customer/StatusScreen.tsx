@@ -1,18 +1,35 @@
-import React from 'react';
-import {
-  Image,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  TouchableHighlight,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Image, StatusBar, StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import Colors from '../../constants/Colors';
-import Constants from '../../constants/Constants';
+import { handleStatusImages } from '../../utils';
+import { API_URL } from '../../services';
 
-const OrderStatusScreen = ({ navigation }: any) => {
+import Colors from '../../constants/Colors';
+
+interface history {
+  fecha: string;
+  estado: string;
+}
+
+const StatusScreen = ({ navigation, route }: any) => {
+  const [orderNumber, setOrderNumber] = useState('');
+  const [history, setHistory] = useState<history[]>([]);
+
+  const orderStatus = history[history.length - 1]?.estado;
+  const providerID = orderNumber?.slice(0, 4);
+
+  const handleSubmit = () => {
+    navigation.navigate('HistoryScreen', { orderNumber, history });
+  };
+
+  useEffect(() => {
+    if (!route.params) return;
+    const { id_segui, estadoHist } = route.params.data;
+    setOrderNumber(id_segui);
+    setHistory(estadoHist);
+  }, [route.params]);
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -21,28 +38,36 @@ const OrderStatusScreen = ({ navigation }: any) => {
         translucent={true}
       />
       <LinearGradient
-        colors={[Colors.customerTopColor, Colors.customerBottomColor]}
+        colors={[Colors.purple3, Colors.purple]}
         style={styles.linearGradient}
         start={{ x: 0.7, y: 0.3 }}>
         <View style={styles.orderInfo}>
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
-              source={require('../../../assets/navira.png')}
+              source={{
+                uri: `${API_URL}/logos/${providerID}.png`,
+              }}
             />
           </View>
-          <Text style={styles.orderNumber}>N°: 123.456</Text>
+          <Text style={styles.orderNumber}>{orderNumber || 0}</Text>
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={require('../../../assets/delivering.png')}
+              source={handleStatusImages(orderStatus)}
             />
           </View>
-          <Text style={styles.orderStatus}>RECIBIDO</Text>
+          <Text
+            style={[
+              styles.orderStatus,
+              {
+                color: Colors.lightGreen,
+              },
+            ]}>
+            {orderStatus}
+          </Text>
           <View style={styles.seeHistoryContainer}>
-            <Text
-              style={styles.seeHistoryText}
-              onPress={() => navigation.navigate('OrderHistory')}>
+            <Text style={styles.seeHistoryText} onPress={handleSubmit}>
               Ver Historial
             </Text>
           </View>
@@ -52,7 +77,7 @@ const OrderStatusScreen = ({ navigation }: any) => {
   );
 };
 
-export default OrderStatusScreen;
+export default StatusScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -81,11 +106,12 @@ const styles = StyleSheet.create({
   },
 
   orderNumber: {
-    fontSize: 45,
-    fontWeight: '700',
+    fontSize: 22,
+    fontWeight: '800',
     textAlign: 'center',
     marginTop: 20,
     color: Colors.white,
+    letterSpacing: 1,
   },
 
   imageContainer: {
@@ -103,15 +129,13 @@ const styles = StyleSheet.create({
   orderStatus: {
     fontSize: 45,
     textAlign: 'center',
-    color: Colors.lightGreen,
     letterSpacing: 2,
     fontWeight: '700',
-    marginBottom: 20,
   },
 
   seeHistoryContainer: {
     flex: 1,
-    justifyContent: 'center',
+    marginTop: 20,
   },
   seeHistoryText: {
     fontSize: 18,

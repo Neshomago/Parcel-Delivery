@@ -9,8 +9,14 @@ import {
 } from 'react-native';
 import SignatureCapture from 'react-native-signature-capture';
 
-const Signature = ({ shown, hideModal, setEncodedUrl }) => {
-  const ref = useRef();
+interface Props {
+  shown: boolean;
+  hideModal: () => void;
+  setEncodedUrl: (result: any) => void;
+}
+
+const Signature = ({ shown, hideModal, setEncodedUrl }: Props) => {
+  const ref: any = useRef();
 
   const saveImage = () => {
     ref.current.saveImage();
