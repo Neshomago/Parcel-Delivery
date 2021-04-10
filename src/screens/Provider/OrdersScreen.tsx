@@ -10,7 +10,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { getProviderOrders } from '../../services';
-import Order from '../../components/Provider/Order';
+import ProviderOrder from '../../components/ProviderOrder';
 // import { getDataFromStorage } from '../../utils';
 import Colors from '../../constants/Colors';
 
@@ -80,7 +80,13 @@ const Orders = ({ navigation, route }: any) => {
           </View>
         ) : (
           orders &&
-          orders.map((order) => <Order key={order.id_cpte} data={order} />)
+          orders.map((order) => (
+            <ProviderOrder
+              key={order.id_cpte}
+              data={order}
+              navigation={navigation}
+            />
+          ))
         )}
       </ScrollView>
     </View>

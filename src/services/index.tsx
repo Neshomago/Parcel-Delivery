@@ -30,7 +30,21 @@ export const getProviderOrders = (user: string): Promise<any> => {
 };
 
 export const getProviderOrder = (orderID: string): Promise<any> => {
-  return axios.post('/pedido.php?', {
+  return axios.post(`${API_URL}/pedido.php?`, {
     id_cpte: orderID,
+  });
+};
+
+export const updateProviderOrder = (
+  orderID: string,
+  status: string,
+  signature: string,
+  comments: string,
+): Promise<any> => {
+  return axios.put(`${API_URL}/pedido.php?`, {
+    id_cpte: orderID,
+    id_estado: status,
+    bl_firma: signature,
+    tx_detalle: comments,
   });
 };

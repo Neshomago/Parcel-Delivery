@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { TouchableNativeFeedback, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -11,6 +10,7 @@ import StatusScreen from '../screens/Customer/StatusScreen';
 import HistoryScreen from '../screens/Customer/HistoryScreen';
 import LoginScreen from '../screens/Provider/LoginScreen';
 import OrdersScreen from '../screens/Provider/OrdersScreen';
+import OrderScreen from '../screens/Provider/OrderScreen';
 import MapScreen from '../screens/Provider/MapScreen';
 import QRScanner from '../components/QRScanner';
 import Colors from '../constants/Colors';
@@ -139,6 +139,13 @@ const ProviderStackNav = () => {
             headerTintColor: Colors.white,
             headerLeft: () => null,
           })}
+        />
+        <Stack.Screen
+          name="OrderScreen"
+          component={OrderScreen}
+          options={{
+            headerShown: false,
+          }}
         />
         <Stack.Screen
           name="MapScreen"

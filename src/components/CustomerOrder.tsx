@@ -2,8 +2,8 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-import { handleStatusImages } from '../../utils';
-import Colors from '../../constants/Colors';
+import { handleStatusImages } from '../utils';
+import Colors from '../constants/Colors';
 
 interface Props {
   date: string;
@@ -11,7 +11,7 @@ interface Props {
   isFirst: boolean;
   isDisabled: boolean;
 }
-const Order = ({ date, status, isFirst, isDisabled }: Props) => {
+const CustomerOrder = ({ date, status, isFirst, isDisabled }: Props) => {
   return (
     <View style={styles.container}>
       {isFirst ? null : (
@@ -42,7 +42,7 @@ const Order = ({ date, status, isFirst, isDisabled }: Props) => {
   );
 };
 
-export default Order;
+export default CustomerOrder;
 
 const styles = StyleSheet.create({
   container: {

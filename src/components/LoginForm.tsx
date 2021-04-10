@@ -14,7 +14,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { Text, Item } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 
-import Colors from '../../constants/Colors';
+import Colors from '../constants/Colors';
 
 function FocusAwareStatusBar(props: any) {
   const isFocused = useIsFocused();

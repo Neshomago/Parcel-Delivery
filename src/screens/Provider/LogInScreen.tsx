@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 
-import LoginForm from '../../components/Provider/LoginForm';
+import LoginForm from '../../components/LoginForm';
 import { logIn } from '../../services';
 import { AuthContext } from '../../context';
 import { setDataInStorage } from '../../utils';

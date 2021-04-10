@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import Order from '../../components/Customer/Order';
+import Order from '../../components/CustomerOrder';
 import Colors from '../../constants/Colors';
 
-const OrderHistory = ({ route }: any) => {
+const HistoryScreen: FC = ({ route }: any) => {
   const { orderNumber, history } = route.params;
 
   return (
@@ -38,7 +38,7 @@ const OrderHistory = ({ route }: any) => {
   );
 };
 
-export default OrderHistory;
+export default HistoryScreen;
 
 const styles = StyleSheet.create({
   container: {

@@ -8,8 +8,7 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import OrderModal from './OrderModal';
-import Colors from '../../constants/Colors';
+import Colors from '../constants/Colors';
 
 interface Props {
   data: {
@@ -20,15 +19,15 @@ interface Props {
     latitud: string;
     longitud: string;
   };
+  navigation: any;
 }
 
-const Order: React.FC<Props> = ({ data }) => {
-  const [modalVisible, setModalVisible] = useState(false);
+const ProviderOrder: React.FC<Props> = ({ data, navigation }) => {
   const [orderStatus, setOrderStatus] = useState('');
   const { id_cpte, nombre_cliente, direccion, nu_paquetes } = data;
 
-  const toggleModal = () => {
-    setModalVisible(!modalVisible);
+  const handleTouch = () => {
+    id_cpte && navigation.navigate('OrderScreen', { id_cpte });
   };
 
   const handleDeliverColor = () => {
@@ -46,11 +45,11 @@ const Order: React.FC<Props> = ({ data }) => {
   return (
     <>
       <StatusBar
-        backgroundColor={modalVisible ? Colors.white : Colors.purple2}
+        backgroundColor={Colors.purple2}
         barStyle="dark-content"
         translucent={true}
       />
-      <TouchableNativeFeedback onPress={toggleModal}>
+      <TouchableNativeFeedback onPress={handleTouch}>
         <View style={styles.container}>
           <View style={orderStatus !== '' && styles.overlay} />
           <View style={styles.topContainer}>
@@ -81,18 +80,11 @@ const Order: React.FC<Props> = ({ data }) => {
           </View>
         </View>
       </TouchableNativeFeedback>
-      <OrderModal
-        data={data}
-        visible={modalVisible}
-        toggleModal={toggleModal}
-        orderStatus={orderStatus}
-        setOrderStatus={setOrderStatus}
-      />
     </>
   );
 };
 
-export default Order;
+export default ProviderOrder;
 
 const styles = StyleSheet.create({
   overlay: {
