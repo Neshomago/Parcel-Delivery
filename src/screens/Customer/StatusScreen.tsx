@@ -1,25 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Image, StatusBar, StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
 import { handleStatusImages } from '../../utils';
 import { API_URL } from '../../services';
-
 import Colors from '../../constants/Colors';
+import { CustomerStackParams } from '../../navigation';
 
-interface history {
+interface Props {
+  navigation: StackNavigationProp<CustomerStackParams>;
+  route: RouteProp<CustomerStackParams, 'MainScreen'>;
+}
+interface History {
   fecha: string;
   estado: string;
 }
 
-const StatusScreen = ({ navigation, route }: any) => {
+const StatusScreen = ({ navigation, route }: Props) => {
   const [orderNumber, setOrderNumber] = useState('');
-  const [history, setHistory] = useState<history[]>([]);
+  const [history, setHistory] = useState<History[]>([]);
 
-  const orderStatus = history[history.length - 1]?.estado;
+  const orderStatus = history[history.length - 1]?.estado; // :/
   const providerID = orderNumber?.slice(0, 4);
 
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     navigation.navigate('HistoryScreen', { orderNumber, history });
   };
 

@@ -8,14 +8,22 @@ import {
 } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
 import { getProviderOrders } from '../../services';
 import ProviderOrder from '../../components/ProviderOrder';
 // import { getDataFromStorage } from '../../utils';
 import Colors from '../../constants/Colors';
+import { ProviderStackParams, IOrder } from '../../navigation';
 
-const Orders = ({ navigation, route }: any) => {
-  const [orders, setOrders] = useState([]);
+interface Props {
+  route: RouteProp<ProviderStackParams, 'OrdersScreen'>;
+  navigation: StackNavigationProp<ProviderStackParams>;
+}
+
+const OrdersScreen = ({ navigation, route }: Props) => {
+  const [orders, setOrders] = useState<IOrder[]>([]);
   const [isLoading, setLoading] = useState(false);
 
   const { userName } = route.params;
@@ -25,7 +33,7 @@ const Orders = ({ navigation, route }: any) => {
   //   console.log('token', token);
   // };
 
-  const getOrders = async () => {
+  const getOrders = async (): Promise<any> => {
     if (!userName) return;
     setLoading(true);
     await getProviderOrders(userName)
@@ -93,7 +101,7 @@ const Orders = ({ navigation, route }: any) => {
   );
 };
 
-export default Orders;
+export default OrdersScreen;
 
 const styles = StyleSheet.create({
   container: {

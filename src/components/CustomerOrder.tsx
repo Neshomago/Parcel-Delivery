@@ -14,7 +14,7 @@ interface Props {
 const CustomerOrder = ({ date, status, isFirst, isDisabled }: Props) => {
   return (
     <View style={styles.container}>
-      {isFirst ? null : (
+      {!isFirst && (
         <FeatherIcon
           style={[styles.icon, isDisabled && styles.disabledText]}
           name={'chevrons-down'}
@@ -31,7 +31,7 @@ const CustomerOrder = ({ date, status, isFirst, isDisabled }: Props) => {
         </View>
         <View style={styles.statusData}>
           <Text style={[styles.text, isDisabled && styles.disabledText]}>
-            {date + '  -'}
+            {`${date}  -`}
           </Text>
           <Text style={[styles.text, isDisabled && styles.disabledText]}>
             {status}

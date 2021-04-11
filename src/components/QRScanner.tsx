@@ -9,15 +9,16 @@ import {
   View,
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import { RNCamera as Camera } from 'react-native-camera';
+import { RNCamera as Camera, BarCodeReadEvent } from 'react-native-camera';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useIsFocused } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import Colors from '../constants/Colors';
 import { getUserOrder } from '../services';
+import { CustomerStackParams } from '../navigation';
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const { height, width } = Dimensions.get('window');
 
 function FocusAwareStatusBar(props: any) {
   const isFocused = useIsFocused();
@@ -25,20 +26,25 @@ function FocusAwareStatusBar(props: any) {
   return isFocused ? <StatusBar {...props} /> : null;
 }
 
-const QRScanner = ({ navigation, isProvider = false }: any) => {
+interface Props {
+  navigation: StackNavigationProp<CustomerStackParams>;
+  isProvider: boolean;
+}
+
+const QRScanner = ({ navigation, isProvider = false }: Props) => {
   const [isTorchOn, setTorchOn] = useState(false);
 
-  const handleDataSend = (data: any) => {
+  const handleDataSend = (data: object) => {
     if (isProvider) return '';
     else data && navigation.navigate('StatusScreen', { data });
   };
-  const onSuccess = (e: any) => {
+  const onSuccess = (e: BarCodeReadEvent): void => {
     getUserOrder(e.data)
       .then((res) => handleDataSend(res.data))
       .catch((err) => Alert.alert(err));
   };
 
-  const handleTorch = () => {
+  const handleTorch = (): void => {
     setTorchOn(!isTorchOn);
   };
 
@@ -53,7 +59,7 @@ const QRScanner = ({ navigation, isProvider = false }: any) => {
         showMarker={true}
         reactivate={true}
         reactivateTimeout={3000}
-        cameraStyle={{ height: SCREEN_HEIGHT }}
+        cameraStyle={{ height: height }}
         cameraProps={{
           flashMode: isTorchOn
             ? Camera.Constants.FlashMode.torch
@@ -103,12 +109,12 @@ const QRScanner = ({ navigation, isProvider = false }: any) => {
 
 const overlayColor = 'rgba(0,0,0,0.5)'; // this gives us a black color with a 50% transparency
 
-const rectDimensions = SCREEN_WIDTH * 0.65; // this is equivalent to 255 from a 393 device width
-const rectBorderWidth = SCREEN_WIDTH * 0.005; // this is equivalent to 2 from a 393 device width
+const rectDimensions = width * 0.65; // this is equivalent to 255 from a 393 device width
+const rectBorderWidth = width * 0.005; // this is equivalent to 2 from a 393 device width
 const rectBorderColor = 'red';
 
-const scanBarWidth = SCREEN_WIDTH * 0.46; // this is equivalent to 180 from a 393 device width
-const scanBarHeight = SCREEN_WIDTH * 0.0025; //this is equivalent to 1 from a 393 device width
+const scanBarWidth = width * 0.46; // this is equivalent to 180 from a 393 device width
+const scanBarHeight = width * 0.0025; //this is equivalent to 1 from a 393 device width
 const scanBarColor = '#22ff00';
 
 const styles = StyleSheet.create({
@@ -120,8 +126,8 @@ const styles = StyleSheet.create({
 
   topOverlay: {
     flex: 1,
-    height: SCREEN_WIDTH,
-    width: SCREEN_WIDTH,
+    height: width,
+    width: width,
     backgroundColor: overlayColor,
     justifyContent: 'center',
     alignItems: 'center',
@@ -136,8 +142,8 @@ const styles = StyleSheet.create({
   },
 
   leftAndRightOverlay: {
-    height: SCREEN_WIDTH * 0.65,
-    width: SCREEN_WIDTH,
+    height: width * 0.65,
+    width: width,
     backgroundColor: overlayColor,
   },
 
@@ -153,10 +159,10 @@ const styles = StyleSheet.create({
 
   bottomOverlay: {
     flex: 1,
-    height: SCREEN_WIDTH,
-    width: SCREEN_WIDTH,
+    height: width,
+    width: width,
     backgroundColor: overlayColor,
-    paddingBottom: SCREEN_WIDTH * 0.25,
+    paddingBottom: width * 0.25,
   },
 
   leftIcon: {

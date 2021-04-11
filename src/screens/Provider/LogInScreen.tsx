@@ -1,11 +1,17 @@
 import React, { useState, useContext } from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import LoginForm from '../../components/LoginForm';
 import { logIn } from '../../services';
 import { AuthContext } from '../../context';
 import { setDataInStorage } from '../../utils';
+import { ProviderStackParams } from '../../navigation';
 
-const LogInScreen = ({ navigation }: any) => {
+interface Props {
+  navigation: StackNavigationProp<ProviderStackParams>;
+}
+
+const LogInScreen = ({ navigation }: Props) => {
   const [userName, setUserName] = useState('arce');
   const [password, setPassword] = useState('arce');
   const [isLoading, setIsLoading] = useState(false);
@@ -13,10 +19,10 @@ const LogInScreen = ({ navigation }: any) => {
 
   const { setLoggedIn } = useContext(AuthContext);
 
-  const onChangeUser = (user: string) => {
+  const onChangeUser = (user: string): void => {
     setUserName(user);
   };
-  const onChangePassword = (pw: string) => {
+  const onChangePassword = (pw: string): void => {
     setPassword(pw);
   };
 

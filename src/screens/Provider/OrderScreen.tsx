@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Alert,
   Image,
@@ -13,26 +13,22 @@ import {
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Picker } from '@react-native-picker/picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
 import Colors from '../../constants/Colors';
 import Constants from '../../constants/Constants';
 import Signature from '../../components/Signature';
 import { getProviderOrder, updateProviderOrder } from '../../services';
+import { ProviderStackParams, IOrder } from '../../navigation';
 
-interface orderData {
-  id_cpte: string;
-  nombre_cliente: string;
-  direccion: string;
-  nu_paquetes: string;
-  latitud: string;
-  longitud: string;
-  tx_detalle: string;
-  id_estado: string;
-  bl_firma: string;
+interface Props {
+  route: RouteProp<ProviderStackParams, 'OrderScreen'>;
+  navigation: StackNavigationProp<ProviderStackParams>;
 }
 
-const OrderScreen: FC = ({ navigation, route }: any) => {
-  const [orderData, setOrderData] = useState<orderData>({
+const OrderScreen = ({ navigation, route }: Props) => {
+  const [orderData, setOrderData] = useState<IOrder>({
     id_cpte: '',
     nombre_cliente: '',
     direccion: '',
@@ -65,15 +61,15 @@ const OrderScreen: FC = ({ navigation, route }: any) => {
     setCompleted(true);
   };
 
-  const toggleSignatureModal = () => {
+  const toggleSignatureModal = (): void => {
     setSignatureModalOpen(!signatureModalOpen);
   };
 
-  const setEncodedUrl = (url: any) => {
+  const setEncodedUrl = (url: any): void => {
     setSignatureUrl(url);
   };
 
-  const getOrder = () => {
+  const getOrder = (): void => {
     if (id_cpte)
       getProviderOrder(id_cpte)
         .then((res) => setOrderData(res.data))

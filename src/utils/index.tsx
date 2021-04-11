@@ -4,13 +4,12 @@ import deliveringImage from '../../assets/delivering.png';
 import disDeliveringImage from '../../assets/delivering_disabled.png';
 import deliveredImage from '../../assets/delivered.png';
 import disDeliveredImage from '../../assets/delivered_disabled.png';
-
 import naviraImage from '../../assets/navira.png';
 
 export const handleStatusImages = (
   status: string,
   isDisabled: boolean = false,
-) => {
+): string => {
   switch (status) {
     case 'Preparado':
       return preparingImage;
@@ -25,7 +24,7 @@ export const handleStatusImages = (
   }
 };
 
-export const setDataInStorage = (key: string, value: any) => {
+export const setDataInStorage = (key: string, value: any): void => {
   try {
     const data = JSON.stringify(value);
     AsyncStorage.setItem(key, data);
@@ -34,7 +33,7 @@ export const setDataInStorage = (key: string, value: any) => {
   }
 };
 
-export const getDataFromStorage = async (key: string) => {
+export const getDataFromStorage = async (key: string): Promise<any> => {
   try {
     const data = await AsyncStorage.getItem(key);
     if (data !== null) return data;

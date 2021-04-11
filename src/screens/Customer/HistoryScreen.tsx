@@ -1,11 +1,18 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { RouteProp } from '@react-navigation/native';
 
 import Order from '../../components/CustomerOrder';
 import Colors from '../../constants/Colors';
 
-const HistoryScreen: FC = ({ route }: any) => {
+import { CustomerStackParams } from '../../navigation';
+
+interface Props {
+  route: RouteProp<CustomerStackParams, 'HistoryScreen'>;
+}
+
+const HistoryScreen = ({ route }: Props) => {
   const { orderNumber, history } = route.params;
 
   return (
@@ -64,19 +71,4 @@ const styles = StyleSheet.create({
   },
 
   ordersHistory: {},
-
-  // imageTextContainer: {
-  //   width: '100%',
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   alignSelf: 'center',
-  // },
-
-  // image: {
-  //   height: 150,
-  //   width: '50%',
-  //   resizeMode: 'contain',
-  // },
-
-  // status: {},
 });

@@ -14,10 +14,12 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { useIsFocused } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import Constants from '../../constants/Constants';
 import Colors from '../../constants/Colors';
 import { getUserOrder } from '../../services';
+import { CustomerStackParams } from '../../navigation';
 
 function FocusAwareStatusBar(props: any) {
   const isFocused = useIsFocused();
@@ -31,12 +33,16 @@ function FocusAwareStatusBar(props: any) {
 // 004703000X00025XZ0Z94H
 // 004703000X00025XZ0Z3J9
 
-const MainScreen = ({ navigation }: any) => {
+interface Props {
+  navigation: StackNavigationProp<CustomerStackParams>;
+}
+
+const MainScreen = ({ navigation }: Props) => {
   const [orderId, setOrderId] = useState('004803000X00025XZ0ZBEW');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleDataSend = (data: any) => {
+  const handleDataSend = (data: object) => {
     data && navigation.navigate('StatusScreen', { data });
   };
 
@@ -57,7 +63,7 @@ const MainScreen = ({ navigation }: any) => {
   };
 
   const handleQRPress = () => {
-    navigation.navigate('QRCodeCustomer');
+    navigation.navigate('QRScanner');
   };
 
   return (
@@ -189,10 +195,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     color: Colors.white,
-  },
-
-  modalContainer: {
-    flex: 1,
   },
 
   errorText: {

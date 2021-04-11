@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -7,25 +7,18 @@ import {
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
 import Colors from '../../constants/Colors';
+import { ProviderStackParams } from '../../navigation';
 
 interface Props {
-  route: any;
-  navigation: any;
+  route: RouteProp<ProviderStackParams, 'MapScreen'>;
+  navigation: StackNavigationProp<ProviderStackParams>;
 }
 
-interface Order {
-  id_cpte: string;
-  id_estado: string;
-  nombre_cliente: string;
-  direccion: string;
-  nu_paquetes: string | number;
-  latitud: string;
-  longitud: string;
-}
-
-const OrdersMap: FC<Props> = ({ navigation, route }) => {
+const MapScreen = ({ navigation, route }: Props) => {
   const { orders } = route.params;
   return (
     <View style={styles.container}>
@@ -46,7 +39,7 @@ const OrdersMap: FC<Props> = ({ navigation, route }) => {
           latitudeDelta: 0.0112, //Check this values. Marker is not being centered properly
           longitudeDelta: 0.0075, //Check this values. Marker is not being centered properly
         }}>
-        {orders.map((order: Order) => (
+        {orders.map((order) => (
           <Marker
             key={order.id_cpte}
             identifier={order.id_cpte}
@@ -69,7 +62,7 @@ const OrdersMap: FC<Props> = ({ navigation, route }) => {
   );
 };
 
-export default OrdersMap;
+export default MapScreen;
 
 const styles = StyleSheet.create({
   container: {

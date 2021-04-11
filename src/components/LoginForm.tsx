@@ -18,8 +18,15 @@ import Colors from '../constants/Colors';
 
 function FocusAwareStatusBar(props: any) {
   const isFocused = useIsFocused();
-
   return isFocused ? <StatusBar {...props} /> : null;
+}
+
+interface Props {
+  onChangeUser: (user: string) => void;
+  onChangePassword: (pw: string) => void;
+  onSubmit: () => void;
+  errorMessage: string;
+  isLoading: boolean;
 }
 
 const LoginScreen = ({
@@ -28,7 +35,7 @@ const LoginScreen = ({
   onSubmit,
   errorMessage,
   isLoading,
-}: any) => {
+}: Props) => {
   const [showPassword, setShowPassword] = useState(true);
 
   return (
@@ -91,9 +98,6 @@ const LoginScreen = ({
           ) : null}
           {isLoading && <ActivityIndicator size="large" color="#fff" />}
         </View>
-        <Text style={{ color: Colors.whitish, fontSize: 18 }}>
-          Us: arce - Pw: arce
-        </Text>
       </LinearGradient>
     </View>
   );
@@ -105,12 +109,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   linearGradient: {
     flex: 1,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   formContainer: {
     width: '100%',
     padding: 20,
@@ -120,6 +126,12 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 
+  inputContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
   textInput: {
     width: '85%',
     color: 'white',
@@ -127,10 +139,9 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
 
-  inputContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  passwordIcon: {
+    color: 'white',
+    alignSelf: 'center',
   },
 
   loginButtonTouchable: {
@@ -150,18 +161,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
-  passwordIcon: {
-    color: 'white',
-    alignSelf: 'center',
-  },
-
-  createAccText: {
-    color: 'white',
-    paddingTop: 20,
-    fontSize: 16,
-    textAlign: 'center',
-    textDecorationLine: 'underline',
-  },
   errorText: {
     fontSize: 16,
     textAlign: 'center',

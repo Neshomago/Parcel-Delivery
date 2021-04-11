@@ -15,12 +15,17 @@ import MapScreen from '../screens/Provider/MapScreen';
 import QRScanner from '../components/QRScanner';
 import Colors from '../constants/Colors';
 
+export type TabParams = {
+  MainScreen: undefined;
+  ProviderScreen: undefined;
+};
+
 const Navigation = () => {
-  const Tab = createMaterialBottomTabNavigator();
+  const Tab = createMaterialBottomTabNavigator<TabParams>();
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Feed"
+        initialRouteName="MainScreen"
         activeColor={Colors.white}
         inactiveColor={Colors.white}
         shifting={true}>
@@ -51,8 +56,24 @@ const Navigation = () => {
   );
 };
 
+interface HistInterface {
+  fecha: string;
+  estado: string;
+}
+
+interface MainScreenInterface {
+  data: { id_segui: string; estadoHist: HistInterface[] };
+}
+
+export type CustomerStackParams = {
+  MainScreen: MainScreenInterface;
+  StatusScreen: any;
+  QRScanner: undefined;
+  HistoryScreen: { orderNumber: string; history: HistInterface[] };
+};
+
 const CustomerStackNav = () => {
-  const Stack = createStackNavigator();
+  const Stack = createStackNavigator<CustomerStackParams>();
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -80,7 +101,7 @@ const CustomerStackNav = () => {
         }}
       />
       <Stack.Screen
-        name="QRCodeCustomer"
+        name="QRScanner"
         component={QRScanner}
         options={{
           headerShown: false,
@@ -104,9 +125,28 @@ const CustomerStackNav = () => {
   );
 };
 
+export interface IOrder {
+  id_cpte: string;
+  id_estado: string;
+  nombre_cliente: string;
+  direccion: string;
+  nu_paquetes: string;
+  latitud: string;
+  longitud: string;
+  tx_detalle: string;
+  bl_firma: string;
+}
+
+export type ProviderStackParams = {
+  LoginScreen: { userName: string };
+  OrdersScreen: { userName: string };
+  OrderScreen: { id_cpte: string };
+  MapScreen: { orders: IOrder[] };
+};
+
 const ProviderStackNav = () => {
   const { isLoggedIn } = useContext(AuthContext);
-  const Stack = createStackNavigator();
+  const Stack = createStackNavigator<ProviderStackParams>();
   return (
     <ContextProvider>
       <Stack.Navigator
