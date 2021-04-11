@@ -4,7 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   View,
-  TouchableNativeFeedback,
+  TouchableOpacity,
 } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -52,7 +52,7 @@ const OrdersScreen = ({ navigation, route }: Props) => {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <View style={styles.barItems}>
-          <TouchableNativeFeedback>
+          <TouchableOpacity>
             <AntDesign
               name="user"
               size={24}
@@ -60,8 +60,8 @@ const OrdersScreen = ({ navigation, route }: Props) => {
               style={styles.icon}
               onPress={() => {}}
             />
-          </TouchableNativeFeedback>
-          <TouchableNativeFeedback>
+          </TouchableOpacity>
+          <TouchableOpacity>
             <Fontisto
               name="spinner-refresh"
               size={24}
@@ -69,8 +69,8 @@ const OrdersScreen = ({ navigation, route }: Props) => {
               style={styles.icon}
               onPress={getOrders}
             />
-          </TouchableNativeFeedback>
-          <TouchableNativeFeedback>
+          </TouchableOpacity>
+          <TouchableOpacity>
             <Fontisto
               name="map"
               size={22}
@@ -78,7 +78,7 @@ const OrdersScreen = ({ navigation, route }: Props) => {
               style={styles.icon}
               onPress={() => navigation.navigate('MapScreen', { orders })}
             />
-          </TouchableNativeFeedback>
+          </TouchableOpacity>
         </View>
       </View>
       <ScrollView>

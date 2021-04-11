@@ -33,8 +33,8 @@ const OrderScreen = ({ navigation, route }: Props) => {
     nombre_cliente: '',
     direccion: '',
     nu_paquetes: '',
-    latitud: '',
-    longitud: '',
+    latitud: '0',
+    longitud: '0',
     tx_detalle: '',
     id_estado: '',
     bl_firma: '',
@@ -47,6 +47,12 @@ const OrderScreen = ({ navigation, route }: Props) => {
 
   const { id_cpte } = route.params;
 
+  // const updateOrder = async () => {
+  //   const { id_estado, bl_firma, tx_detalle } = orderData;
+
+  //   await updateProviderOrder(id_cpte, id_estado, bl_firma, tx_detalle);
+  // };
+
   const handleSubmit = async () => {
     if (status === 'Seleccione un estado') {
       Alert.alert('Debe seleccionar un estado');
@@ -57,7 +63,6 @@ const OrderScreen = ({ navigation, route }: Props) => {
       Alert.alert('La entrega debe estar firmada y/o comentada');
       return;
     }
-    updateOrder();
     setCompleted(true);
   };
 
@@ -70,16 +75,9 @@ const OrderScreen = ({ navigation, route }: Props) => {
   };
 
   const getOrder = (): void => {
-    if (id_cpte)
-      getProviderOrder(id_cpte)
-        .then((res) => setOrderData(res.data))
-        .catch((err) => console.error(err));
-  };
-
-  const updateOrder = async () => {
-    const { id_estado, bl_firma, tx_detalle } = orderData;
-
-    await updateProviderOrder(id_cpte, id_estado, bl_firma, tx_detalle);
+    getProviderOrder(id_cpte)
+      .then((res) => setOrderData(res.data))
+      .catch((err) => console.error(err));
   };
 
   useEffect(() => {
@@ -88,13 +86,11 @@ const OrderScreen = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     getOrder();
-    console.log('OD', orderData);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [orderData.id_cpte]);
 
   return (
-    <ScrollView>
+    <>
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons
@@ -104,112 +100,116 @@ const OrderScreen = ({ navigation, route }: Props) => {
             color={Colors.white}
           />
         </TouchableWithoutFeedback>
-        <View style={styles.info}>
-          <Text style={styles.title}>O.N: {orderData?.id_cpte}</Text>
-          <Text style={styles.customerName}>{orderData?.nombre_cliente}</Text>
-          <Text style={styles.text}>{orderData?.direccion}</Text>
-          <Text style={styles.text}>
-            {orderData?.nu_paquetes}{' '}
-            {orderData?.nu_paquetes === '1' ? 'paquete' : 'paquetes'}
-          </Text>
-          {signatureUrl ? (
-            <View style={styles.signatureContainer}>
-              <Image
-                resizeMode={'stretch'}
-                style={styles.signatureImage}
-                source={{ uri: `data:image/jpeg;base64,${signatureUrl}` }}
-              />
-            </View>
-          ) : (
-            <View style={styles.mapContainer}>
-              <MapView
-                provider={PROVIDER_GOOGLE}
-                style={styles.map}
-                initialRegion={{
-                  latitude: parseFloat(orderData?.latitud),
-                  longitude: parseFloat(orderData?.longitud),
-                  latitudeDelta: 0.0112, //Check this values. Marker is not being centered properly
-                  longitudeDelta: 0.0075, //Check this values. Marker is not being centered properly
-                }}>
-                <Marker
-                  coordinate={{
-                    latitude: parseFloat(orderData?.latitud),
-                    longitude: parseFloat(orderData?.longitud),
-                  }}
-                />
-              </MapView>
-            </View>
-          )}
-          <TouchableHighlight
-            style={styles.button}
-            onPress={() => {
-              setSignatureModalOpen(true);
-            }}>
-            <Text style={styles.buttonText}>
-              {!signatureUrl ? 'Firma' : 'Editar Firma'}
+        <ScrollView>
+          <View style={styles.info}>
+            <Text style={styles.title}>O.N: {orderData?.id_cpte}</Text>
+            <Text style={styles.customerName}>{orderData?.nombre_cliente}</Text>
+            <Text style={styles.text}>{orderData?.direccion}</Text>
+            <Text style={styles.text}>
+              {orderData?.nu_paquetes}{' '}
+              {orderData?.nu_paquetes === '1' ? 'paquete' : 'paquetes'}
             </Text>
-          </TouchableHighlight>
-          <View style={styles.pickerContainer}>
-            <Picker
-              style={styles.picker}
-              selectedValue={status}
-              //@ts-ignore
-              onValueChange={(itemValue) => setStatus(itemValue)}>
-              <Picker.Item
-                enabled={false}
-                color={Colors.inactive}
-                label="Seleccione un estado"
-                value="Seleccione un estado"
-              />
-              <Picker.Item label="Volver a pasar" value="Volver a pasar" />
-              <Picker.Item label="Entregado" value="Entregado" />
-              <Picker.Item label="Rechazado" value="Rechazado" />
-            </Picker>
-          </View>
+            {signatureUrl ? (
+              <View style={styles.signatureContainer}>
+                <Image
+                  resizeMode={'stretch'}
+                  style={styles.signatureImage}
+                  source={{ uri: `data:image/jpeg;base64,${signatureUrl}` }}
+                />
+              </View>
+            ) : (
+              <View style={styles.mapContainer}>
+                {orderData.latitud !== '0' ? (
+                  <MapView
+                    provider={PROVIDER_GOOGLE}
+                    style={styles.map}
+                    initialRegion={{
+                      latitude: parseFloat(orderData?.latitud),
+                      longitude: parseFloat(orderData?.longitud),
+                      latitudeDelta: 0.0112, //Check this values. Marker is not being centered properly
+                      longitudeDelta: 0.0075, //Check this values. Marker is not being centered properly
+                    }}>
+                    <Marker
+                      coordinate={{
+                        latitude: parseFloat(orderData?.latitud),
+                        longitude: parseFloat(orderData?.longitud),
+                      }}
+                    />
+                  </MapView>
+                ) : null}
+              </View>
+            )}
+            <TouchableHighlight
+              style={styles.button}
+              onPress={() => {
+                setSignatureModalOpen(true);
+              }}>
+              <Text style={styles.buttonText}>
+                {!signatureUrl ? 'Firma' : 'Editar Firma'}
+              </Text>
+            </TouchableHighlight>
+            <View style={styles.pickerContainer}>
+              <Picker
+                style={styles.picker}
+                selectedValue={status}
+                //@ts-ignore
+                onValueChange={(itemValue) => setStatus(itemValue)}>
+                <Picker.Item
+                  enabled={false}
+                  color={Colors.inactive}
+                  label="Seleccione un estado"
+                  value="Seleccione un estado"
+                />
+                <Picker.Item label="Volver a pasar" value="Volver a pasar" />
+                <Picker.Item label="Entregado" value="Entregado" />
+                <Picker.Item label="Rechazado" value="Rechazado" />
+              </Picker>
+            </View>
 
-          <TextInput
-            style={styles.textInput}
-            textAlignVertical="top"
-            placeholder="Comentarios"
-            placeholderTextColor={Colors.whitish}
-            selectionColor={Colors.purple}
-            underlineColorAndroid="transparent"
-            multiline
-            numberOfLines={5}
-            value={comments}
-            onChangeText={(text) => setComments(text)}
-          />
-          {isCompleted ? (
-            <TouchableHighlight
-              style={[
-                styles.button,
-                {
-                  backgroundColor: Colors.mediumBlue,
-                },
-              ]}
-              onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Modificar</Text>
-            </TouchableHighlight>
-          ) : (
-            <TouchableHighlight
-              style={[
-                styles.button,
-                {
-                  backgroundColor: Colors.lightGreen,
-                },
-              ]}
-              onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Finalizar</Text>
-            </TouchableHighlight>
-          )}
-        </View>
+            <TextInput
+              style={styles.textInput}
+              textAlignVertical="top"
+              placeholder="Comentarios"
+              placeholderTextColor={Colors.whitish}
+              selectionColor={Colors.purple}
+              underlineColorAndroid="transparent"
+              multiline
+              numberOfLines={5}
+              value={comments}
+              onChangeText={(text) => setComments(text)}
+            />
+            {isCompleted ? (
+              <TouchableHighlight
+                style={[
+                  styles.button,
+                  {
+                    backgroundColor: Colors.mediumBlue,
+                  },
+                ]}
+                onPress={handleSubmit}>
+                <Text style={styles.buttonText}>Modificar</Text>
+              </TouchableHighlight>
+            ) : (
+              <TouchableHighlight
+                style={[
+                  styles.button,
+                  {
+                    backgroundColor: Colors.lightGreen,
+                  },
+                ]}
+                onPress={handleSubmit}>
+                <Text style={styles.buttonText}>Finalizar</Text>
+              </TouchableHighlight>
+            )}
+          </View>
+        </ScrollView>
       </View>
       <Signature
         shown={signatureModalOpen}
         hideModal={toggleSignatureModal}
         setEncodedUrl={setEncodedUrl}
       />
-    </ScrollView>
+    </>
   );
 };
 

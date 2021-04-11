@@ -96,7 +96,7 @@ const LoginScreen = ({
           {errorMessage ? (
             <Text style={styles.errorText}>{errorMessage}</Text>
           ) : null}
-          {isLoading && <ActivityIndicator size="large" color="#fff" />}
+          {isLoading ? <ActivityIndicator size="large" color="#fff" /> : null}
         </View>
       </LinearGradient>
     </View>

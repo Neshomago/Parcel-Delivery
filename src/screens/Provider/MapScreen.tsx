@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  TouchableWithoutFeedback,
-  Alert,
-} from 'react-native';
+import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -20,6 +15,11 @@ interface Props {
 
 const MapScreen = ({ navigation, route }: Props) => {
   const { orders } = route.params;
+
+  const handleTouch = (id_cpte: string): void => {
+    navigation.navigate('OrderScreen', { id_cpte });
+  };
+
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
@@ -52,9 +52,7 @@ const MapScreen = ({ navigation, route }: Props) => {
             }}
             title={order.nombre_cliente}
             description={`Orden No ${order.id_cpte}`}
-            onCalloutPress={() => {
-              Alert.alert('Esto debe llevar al modal de la orden');
-            }}
+            onCalloutPress={() => handleTouch(order.id_cpte)}
           />
         ))}
       </MapView>

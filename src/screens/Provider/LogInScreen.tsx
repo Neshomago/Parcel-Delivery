@@ -26,11 +26,8 @@ const LogInScreen = ({ navigation }: Props) => {
     setPassword(pw);
   };
 
-  const onSubmit = () => {
-    if (!userName || !password) {
-      setErrorMessage('Ingrese usuario y contraseña');
-      return;
-    }
+  const onSubmit = (): void => {
+    if (!userName || !password) setErrorMessage('Ingrese usuario y contraseña');
 
     setIsLoading(true);
 
