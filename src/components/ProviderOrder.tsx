@@ -1,5 +1,11 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
+import React, { useState, useMemo, useEffect } from 'react';
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableNativeFeedback,
+  View,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -11,6 +17,7 @@ interface Props {
     nombre_cliente: string;
     direccion: string;
     nu_paquetes: string;
+    id_estado: string;
     latitud: string;
     longitud: string;
   };
@@ -18,30 +25,51 @@ interface Props {
 }
 
 const ProviderOrder = ({ data, navigation }: Props) => {
-  const [orderStatus, setOrderStatus] = useState('');
-  const { id_cpte, nombre_cliente, direccion, nu_paquetes } = data;
+  const { id_cpte, nombre_cliente, direccion, nu_paquetes, id_estado } = data;
+
+  const isDelivered = useMemo(
+    () => id_estado === ('4' || '5' || '9' || '18' || '21' || '24'),
+    [id_estado],
+  );
+
+  const hasInformation = useMemo(() => id_estado === ('6' || '7' || '14'), [
+    id_estado,
+  ]);
 
   const handleTouch = (): void => {
     id_cpte && navigation.navigate('OrderScreen', { id_cpte });
   };
 
   const handleDeliverColor = (): object => {
-    if (orderStatus === 'Entregado') return { color: Colors.lightGreen };
-    if (orderStatus === 'Rechazado') return { color: Colors.red };
-    else return { color: Colors.mediumBlue };
+    if (isDelivered) return { color: Colors.lightGreen };
+    if (hasInformation) return { color: Colors.mediumBlue };
+    return {};
+    // if (orderStatus === 'Rechazado') return { color: Colors.red };
   };
 
-  const handleIcon = (): string => {
-    if (orderStatus === 'Entregado') return 'check-bold';
-    if (orderStatus === 'Rechazado') return 'close-thick';
-    else return 'exclamation-thick';
+  const handleIcon = () => {
+    if (isDelivered) return 'check-bold';
+    if (hasInformation) return 'exclamation-thick';
   };
+
+  useEffect(() => {
+    console.log('isDelivered', isDelivered);
+  }, [isDelivered]);
+
+  useEffect(() => {
+    console.log('hasInformation', hasInformation);
+  }, [hasInformation]);
 
   return (
     <>
+      <StatusBar
+        backgroundColor="transparent"
+        barStyle="light-content"
+        translucent={true}
+      />
       <TouchableNativeFeedback onPress={handleTouch}>
         <View style={styles.container}>
-          <View style={orderStatus !== '' && styles.overlay} />
+          <View style={isDelivered && styles.overlay} />
           <View style={styles.topContainer}>
             <Text style={styles.topText}>N°: {id_cpte}</Text>
           </View>
@@ -51,13 +79,11 @@ const ProviderOrder = ({ data, navigation }: Props) => {
           </View>
 
           <View style={styles.bottomContainer}>
-            {orderStatus !== '' && (
-              <MaterialCommunityIcons
-                style={[styles.checkIcon, handleDeliverColor()]}
-                name={handleIcon()}
-                size={33}
-              />
-            )}
+            <MaterialCommunityIcons
+              style={[styles.icon, handleDeliverColor()]}
+              name={handleIcon()}
+              size={33}
+            />
             <Text style={styles.text}>{direccion}</Text>
             <View style={styles.bottomRightContainer}>
               <MaterialCommunityIcons
@@ -125,7 +151,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
 
-  checkIcon: {
+  icon: {
     position: 'absolute',
     bottom: 5,
     left: 0,

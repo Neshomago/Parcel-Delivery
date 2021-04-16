@@ -8,11 +8,21 @@ import {
   View,
 } from 'react-native';
 import SignatureCapture from 'react-native-signature-capture';
+import { useIsFocused } from '@react-navigation/native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import Colors from '../constants/Colors';
 
 interface Props {
   shown: boolean;
   hideModal: () => void;
   setEncodedUrl: (result: any) => void;
+}
+
+function FocusAwareStatusBar(props: any) {
+  const isFocused = useIsFocused();
+
+  return isFocused ? <StatusBar {...props} /> : null;
 }
 
 const Signature = ({ shown, hideModal, setEncodedUrl }: Props) => {
@@ -33,13 +43,19 @@ const Signature = ({ shown, hideModal, setEncodedUrl }: Props) => {
 
   return (
     <>
-      <StatusBar
-        backgroundColor="transparent"
+      <FocusAwareStatusBar
         barStyle="light-content"
-        translucent={true}
+        backgroundColor={Colors.overlay}
       />
-      <Modal animationType="fade" visible={shown}>
+      <Modal animationType="fade" visible={shown} transparent={true}>
         <View style={styles.container}>
+          <MaterialCommunityIcons
+            style={styles.icon}
+            name={'close-thick'}
+            size={40}
+            onPress={() => hideModal()}
+          />
+          <View onTouchStart={() => hideModal()} style={styles.overlay} />
           <SignatureCapture
             style={styles.signature}
             ref={ref}
@@ -49,7 +65,7 @@ const Signature = ({ shown, hideModal, setEncodedUrl }: Props) => {
             onSaveEvent={handleSaveEvent}
           />
 
-          <View style={styles.buttons}>
+          <View style={styles.buttonsContainer}>
             <TouchableHighlight
               style={styles.button}
               onPress={() => {
@@ -77,14 +93,38 @@ export default Signature;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  icon: {
+    color: 'red',
+    zIndex: 20,
+    position: 'absolute',
+    right: 10,
+    top: 0,
+  },
+
+  overlay: {
+    position: 'absolute',
     width: '100%',
+    height: '100%',
+    backgroundColor: Colors.overlay,
   },
+
   signature: {
-    flex: 1,
+    width: '95%',
+    height: '60%',
+    zIndex: 10,
   },
-  buttons: {
+
+  buttonsContainer: {
+    width: '95%',
     flexDirection: 'row',
+    zIndex: 20,
+    backgroundColor: Colors.white,
   },
+
   button: {
     flex: 1,
     justifyContent: 'center',
@@ -93,23 +133,5 @@ const styles = StyleSheet.create({
     margin: 10,
     borderWidth: 1,
     borderRadius: 30,
-  },
-  modalContainer: {
-    flex: 1,
-  },
-  modalText: {},
-  modalButton: {
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: 'blue',
-    width: '50%',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    marginTop: 30,
-    padding: 10,
-  },
-  modalButtonText: {
-    textAlign: 'center',
-    fontSize: 22,
   },
 });

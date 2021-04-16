@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
+  StatusBar,
   StyleSheet,
   View,
   TouchableOpacity,
@@ -9,17 +10,22 @@ import {
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useIsFocused } from '@react-navigation/native';
 
 import { getProviderOrders } from '../../services';
 import ProviderOrder from '../../components/ProviderOrder';
-// import { getDataFromStorage } from '../../utils';
 import Colors from '../../constants/Colors';
 import { ProviderStackParams, IOrder } from '../../navigation';
 
 interface Props {
   route: RouteProp<ProviderStackParams, 'OrdersScreen'>;
   navigation: StackNavigationProp<ProviderStackParams>;
+}
+
+function FocusAwareStatusBar(props: any) {
+  const isFocused = useIsFocused();
+
+  return isFocused ? <StatusBar {...props} /> : null;
 }
 
 const OrdersScreen = ({ navigation, route }: Props) => {
@@ -33,12 +39,16 @@ const OrdersScreen = ({ navigation, route }: Props) => {
   //   console.log('token', token);
   // };
 
-  const getOrders = async (): Promise<any> => {
+  const getOrders = async () => {
     if (!userName) return;
     setLoading(true);
-    await getProviderOrders(userName)
-      .then((res) => setOrders(res.data))
-      .catch((err) => console.error('err', err));
+    const response = await getProviderOrders(userName);
+    if (!response) {
+      console.error('Error getting order. Status code: ', response.status);
+      return;
+    }
+
+    setOrders(response.data);
 
     setLoading(false);
   };
@@ -50,6 +60,10 @@ const OrdersScreen = ({ navigation, route }: Props) => {
 
   return (
     <View style={styles.container}>
+      <FocusAwareStatusBar
+        barStyle="light-content"
+        backgroundColor={Colors.purple2}
+      />
       <View style={styles.topBar}>
         <View style={styles.barItems}>
           <TouchableOpacity>
@@ -63,20 +77,20 @@ const OrdersScreen = ({ navigation, route }: Props) => {
           </TouchableOpacity>
           <TouchableOpacity>
             <Fontisto
-              name="spinner-refresh"
-              size={24}
-              color={Colors.white}
-              style={styles.icon}
-              onPress={getOrders}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Fontisto
               name="map"
               size={22}
               color={Colors.white}
               style={styles.icon}
               onPress={() => navigation.navigate('MapScreen', { orders })}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Fontisto
+              name="spinner-refresh"
+              size={24}
+              color={Colors.white}
+              style={styles.icon}
+              onPress={getOrders}
             />
           </TouchableOpacity>
         </View>
@@ -116,9 +130,10 @@ const styles = StyleSheet.create({
   barItems: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 10,
   },
-  icon: {},
+  icon: {
+    padding: 20,
+  },
   indicatorContainer: {
     flex: 1,
     marginTop: 10,

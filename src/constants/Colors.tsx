@@ -12,4 +12,5 @@ export default {
   lightGreen: '#5cdb5c',
   red: '#ff0033',
   transparent: 'transparent',
+  overlay: 'rgba(0,0,0,0.5)',
 };
