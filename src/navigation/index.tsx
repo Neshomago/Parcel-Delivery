@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -28,13 +29,13 @@ const Navigation = () => {
         initialRouteName="MainScreen"
         activeColor={Colors.white}
         inactiveColor={Colors.white}
-        shifting={true}>
+        shifting={true}
+        barStyle={styles.bottomBar}>
         <Tab.Screen
           name="MainScreen"
           component={CustomerStackNav}
           options={{
             tabBarLabel: 'Clientes',
-            tabBarColor: Colors.purple,
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons color={color} name="account" size={25} />
             ),
@@ -45,7 +46,6 @@ const Navigation = () => {
           component={ProviderStackNav}
           options={{
             tabBarLabel: 'Transportistas',
-            tabBarColor: Colors.purple,
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons color={color} name="truck" size={25} />
             ),
@@ -155,15 +155,7 @@ const ProviderStackNav = () => {
           name="LoginScreen"
           component={LoginScreen}
           options={{
-            title: 'Log In Transportistas',
-            headerStyle: {
-              backgroundColor: Colors.purple2,
-              elevation: 0,
-            },
-            headerTintColor: Colors.white,
-            headerTitleStyle: {
-              alignSelf: 'center',
-            },
+            headerShown: false,
           }}
         />
         <Stack.Screen
@@ -198,5 +190,15 @@ const ProviderStackNav = () => {
     </ContextProvider>
   );
 };
+
+const styles = StyleSheet.create({
+  bottomBar: {
+    backgroundColor: 'transparent',
+    borderTopWidth: 0,
+    elevation: 0,
+    position: 'absolute',
+    bottom: 0,
+  },
+});
 
 export default Navigation;

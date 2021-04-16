@@ -70,7 +70,7 @@ const MainScreen = ({ navigation }: Props) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <LinearGradient
-          colors={[Colors.purple3, Colors.purple]}
+          colors={[Colors.purple3, Colors.purple3]}
           style={styles.linearGradient}
           start={{ x: 0.7, y: 0.3 }}>
           <FocusAwareStatusBar

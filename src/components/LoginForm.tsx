@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
+  Dimensions,
+  ImageBackground,
   StatusBar,
   StyleSheet,
   View,
@@ -15,6 +17,9 @@ import { Text, Item } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Colors from '../constants/Colors';
+import image from '../../assets/sea.jpg';
+
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 function FocusAwareStatusBar(props: any) {
   const isFocused = useIsFocused();
@@ -40,15 +45,18 @@ const LoginScreen = ({
 
   return (
     <View style={styles.container}>
-      <LinearGradient
+      {/* <LinearGradient
         colors={[Colors.purple2, Colors.purple]}
         style={styles.linearGradient}
         start={{ x: 0.7, y: 0.3 }}>
-        <FocusAwareStatusBar
-          barStyle="light-content"
-          backgroundColor={Colors.purple2}
-        />
-
+        */}
+      <FocusAwareStatusBar
+        barStyle="light-content"
+        translucent
+        backgroundColor="transparent"
+      />
+      <ImageBackground source={image} style={styles.image} blurRadius={5}>
+        <View style={styles.overlay} />
         <View style={styles.formContainer}>
           <Item>
             <FontAwesome style={styles.icon} name="user-o" size={20} />
@@ -98,7 +106,8 @@ const LoginScreen = ({
           ) : null}
           {isLoading ? <ActivityIndicator size="large" color="#fff" /> : null}
         </View>
-      </LinearGradient>
+      </ImageBackground>
+      {/* </LinearGradient> */}
     </View>
   );
 };
@@ -106,8 +115,19 @@ const LoginScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+
+  image: {
+    flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+  },
+
+  overlay: {
+    backgroundColor: Colors.overlay,
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    zIndex: 10,
   },
 
   linearGradient: {
@@ -120,6 +140,7 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '100%',
     padding: 20,
+    zIndex: 20,
   },
 
   icon: {
