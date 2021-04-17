@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
-  Dimensions,
   ImageBackground,
   StatusBar,
   StyleSheet,
@@ -14,12 +13,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useIsFocused } from '@react-navigation/native';
 import { Text, Item } from 'native-base';
-import LinearGradient from 'react-native-linear-gradient';
 
 import Colors from '../constants/Colors';
 import image from '../../assets/sea.jpg';
-
-const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 function FocusAwareStatusBar(props: any) {
   const isFocused = useIsFocused();
@@ -45,11 +41,6 @@ const LoginScreen = ({
 
   return (
     <View style={styles.container}>
-      {/* <LinearGradient
-        colors={[Colors.purple2, Colors.purple]}
-        style={styles.linearGradient}
-        start={{ x: 0.7, y: 0.3 }}>
-        */}
       <FocusAwareStatusBar
         barStyle="light-content"
         translucent

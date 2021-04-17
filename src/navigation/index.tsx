@@ -16,178 +16,132 @@ import MapScreen from '../screens/Provider/MapScreen';
 import QRScanner from '../components/QRScanner';
 import Colors from '../constants/Colors';
 
-export type TabParams = {
-  MainScreen: undefined;
-  ProviderScreen: undefined;
-};
+import { StackParams, TabParams } from './types';
 
-const Navigation = () => {
-  const Tab = createMaterialBottomTabNavigator<TabParams>();
+const StackNavigation = () => {
+  const Stack = createStackNavigator<StackParams>();
+  const { isLoggedIn } = useContext(AuthContext);
+
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="MainScreen"
-        activeColor={Colors.white}
-        inactiveColor={Colors.white}
-        shifting={true}
-        barStyle={styles.bottomBar}>
-        <Tab.Screen
-          name="MainScreen"
-          component={CustomerStackNav}
-          options={{
-            tabBarLabel: 'Clientes',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons color={color} name="account" size={25} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="ProviderScreen"
-          component={ProviderStackNav}
-          options={{
-            tabBarLabel: 'Transportistas',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons color={color} name="truck" size={25} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
+      <ContextProvider>
+        <Stack.Navigator
+          initialRouteName={isLoggedIn ? 'MainScreen' : 'OrdersScreen'}>
+          <Stack.Screen
+            name="MainScreen"
+            component={TabNavigation}
+            options={{
+              headerShown: false,
+              animationEnabled: false,
+            }}
+          />
+          <Stack.Screen
+            name="StatusScreen"
+            component={StatusScreen}
+            options={{
+              title: '',
+              animationEnabled: false,
+              headerStyle: {
+                backgroundColor: Colors.purple3,
+                elevation: 0,
+              },
+              headerTintColor: Colors.white,
+              headerTitleStyle: {
+                alignSelf: 'center',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="QRScanner"
+            component={QRScanner}
+            options={{
+              headerShown: false,
+              animationEnabled: false,
+            }}
+          />
+          <Stack.Screen
+            name="HistoryScreen"
+            component={HistoryScreen}
+            options={{
+              title: 'Historial de orden numero:',
+              animationEnabled: false,
+              headerStyle: {
+                backgroundColor: Colors.purple3,
+                elevation: 0,
+              },
+              headerTintColor: Colors.white,
+            }}
+          />
+          <Stack.Screen
+            name="LoginScreen"
+            component={LoginScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="OrdersScreen"
+            component={OrdersScreen}
+            options={() => ({
+              title: 'Ordenes de entrega',
+              headerTitleStyle: { alignSelf: 'center' },
+              headerStyle: {
+                backgroundColor: Colors.purple2,
+                elevation: 0,
+              },
+              headerTintColor: Colors.white,
+              headerLeft: () => null,
+            })}
+          />
+          <Stack.Screen
+            name="OrderScreen"
+            component={OrderScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="MapScreen"
+            component={MapScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Navigator>
+      </ContextProvider>
     </NavigationContainer>
   );
 };
 
-interface HistInterface {
-  fecha: string;
-  estado: string;
-}
-
-interface MainScreenInterface {
-  data: { id_segui: string; estadoHist: HistInterface[] };
-}
-
-export type CustomerStackParams = {
-  MainScreen: MainScreenInterface;
-  StatusScreen: any;
-  QRScanner: undefined;
-  HistoryScreen: { orderNumber: string; history: HistInterface[] };
-};
-
-const CustomerStackNav = () => {
-  const Stack = createStackNavigator<CustomerStackParams>();
+const TabNavigation = () => {
+  const Tab = createMaterialBottomTabNavigator<TabParams>();
   return (
-    <Stack.Navigator>
-      <Stack.Screen
+    <Tab.Navigator
+      activeColor={Colors.white}
+      inactiveColor={Colors.white}
+      shifting={true}
+      barStyle={styles.bottomBar}>
+      <Tab.Screen
         name="MainScreen"
         component={MainScreen}
         options={{
-          headerShown: false,
-          animationEnabled: false,
+          tabBarLabel: 'Clientes',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons color={color} name="account" size={25} />
+          ),
         }}
       />
-      <Stack.Screen
-        name="StatusScreen"
-        component={StatusScreen}
+      <Tab.Screen
+        name="LoginScreen"
+        component={LoginScreen}
         options={{
-          title: '',
-          animationEnabled: false,
-          headerStyle: {
-            backgroundColor: Colors.purple3,
-            elevation: 0,
-          },
-          headerTintColor: Colors.white,
-          headerTitleStyle: {
-            alignSelf: 'center',
-          },
+          tabBarLabel: 'Transportistas',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons color={color} name="truck" size={25} />
+          ),
         }}
       />
-      <Stack.Screen
-        name="QRScanner"
-        component={QRScanner}
-        options={{
-          headerShown: false,
-          animationEnabled: false,
-        }}
-      />
-      <Stack.Screen
-        name="HistoryScreen"
-        component={HistoryScreen}
-        options={{
-          title: 'Historial de orden numero:',
-          animationEnabled: false,
-          headerStyle: {
-            backgroundColor: Colors.purple3,
-            elevation: 0,
-          },
-          headerTintColor: Colors.white,
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
-
-export interface IOrder {
-  id_cpte: string;
-  id_estado: string;
-  nombre_cliente: string;
-  direccion: string;
-  nu_paquetes: string;
-  latitud: string;
-  longitud: string;
-  tx_detalle: string;
-  bl_firma: string;
-}
-
-export type ProviderStackParams = {
-  LoginScreen: { userName: string };
-  OrdersScreen: { userName: string };
-  OrderScreen: { id_cpte: string };
-  MapScreen: { orders: IOrder[] };
-};
-
-const ProviderStackNav = () => {
-  const { isLoggedIn } = useContext(AuthContext);
-  const Stack = createStackNavigator<ProviderStackParams>();
-  return (
-    <ContextProvider>
-      <Stack.Navigator
-        initialRouteName={isLoggedIn ? 'OrdersScreen' : 'LoginScreen'}>
-        <Stack.Screen
-          name="LoginScreen"
-          component={LoginScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="OrdersScreen"
-          component={OrdersScreen}
-          options={() => ({
-            title: 'Ordenes de entrega',
-            headerTitleStyle: { alignSelf: 'center' },
-            headerStyle: {
-              backgroundColor: Colors.purple2,
-              elevation: 0,
-            },
-            headerTintColor: Colors.white,
-            headerLeft: () => null,
-          })}
-        />
-        <Stack.Screen
-          name="OrderScreen"
-          component={OrderScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="MapScreen"
-          component={MapScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
-    </ContextProvider>
+    </Tab.Navigator>
   );
 };
 
@@ -201,4 +155,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Navigation;
+export default StackNavigation;
