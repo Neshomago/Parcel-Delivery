@@ -19,7 +19,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Constants from '../../constants/Constants';
 import Colors from '../../constants/Colors';
 import { getUserOrder } from '../../services';
-import { CustomerStackParams } from '../../navigation';
+import { StackParams } from '../../navigation/types';
 
 function FocusAwareStatusBar(props: any) {
   const isFocused = useIsFocused();
@@ -34,7 +34,7 @@ function FocusAwareStatusBar(props: any) {
 // 004703000X00025XZ0Z3J9
 
 interface Props {
-  navigation: StackNavigationProp<CustomerStackParams>;
+  navigation: StackNavigationProp<StackParams>;
 }
 
 const MainScreen = ({ navigation }: Props) => {

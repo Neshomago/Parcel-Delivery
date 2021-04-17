@@ -6,10 +6,10 @@ import { RouteProp } from '@react-navigation/native';
 import Order from '../../components/CustomerOrder';
 import Colors from '../../constants/Colors';
 
-import { CustomerStackParams } from '../../navigation';
+import { StackParams } from '../../navigation/types';
 
 interface Props {
-  route: RouteProp<CustomerStackParams, 'HistoryScreen'>;
+  route: RouteProp<StackParams, 'HistoryScreen'>;
 }
 
 const HistoryScreen = ({ route }: Props) => {

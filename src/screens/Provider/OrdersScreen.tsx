@@ -15,11 +15,11 @@ import { RouteProp, useIsFocused } from '@react-navigation/native';
 import { getProviderOrders } from '../../services';
 import ProviderOrder from '../../components/ProviderOrder';
 import Colors from '../../constants/Colors';
-import { ProviderStackParams, IOrder } from '../../navigation';
+import { StackParams, IOrder } from '../../navigation/types';
 
 interface Props {
-  route: RouteProp<ProviderStackParams, 'OrdersScreen'>;
-  navigation: StackNavigationProp<ProviderStackParams>;
+  route: RouteProp<StackParams, 'OrdersScreen'>;
+  navigation: StackNavigationProp<StackParams>;
 }
 
 function FocusAwareStatusBar(props: any) {

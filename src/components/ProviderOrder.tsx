@@ -10,7 +10,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import Colors from '../constants/Colors';
-import { ProviderStackParams } from '../navigation';
+import { StackParams } from '../navigation/types';
 interface Props {
   data: {
     id_cpte: string;
@@ -21,7 +21,7 @@ interface Props {
     latitud: string;
     longitud: string;
   };
-  navigation: StackNavigationProp<ProviderStackParams>;
+  navigation: StackNavigationProp<StackParams>;
 }
 
 const ProviderOrder = ({ data, navigation }: Props) => {

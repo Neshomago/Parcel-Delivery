@@ -5,10 +5,10 @@ import LoginForm from '../../components/LoginForm';
 import { logIn } from '../../services';
 import { AuthContext } from '../../context';
 import { setDataInStorage } from '../../utils';
-import { ProviderStackParams } from '../../navigation';
+import { StackParams } from '../../navigation/types';
 
 interface Props {
-  navigation: StackNavigationProp<ProviderStackParams>;
+  navigation: StackNavigationProp<StackParams>;
 }
 
 const LogInScreen = ({ navigation }: Props) => {

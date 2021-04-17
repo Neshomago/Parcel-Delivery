@@ -16,7 +16,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import Colors from '../constants/Colors';
 import { getUserOrder } from '../services';
-import { CustomerStackParams } from '../navigation';
+import { StackParams } from '../navigation/types';
 
 const { height, width } = Dimensions.get('window');
 
@@ -27,7 +27,7 @@ function FocusAwareStatusBar(props: any) {
 }
 
 interface Props {
-  navigation: StackNavigationProp<CustomerStackParams>;
+  navigation: StackNavigationProp<StackParams>;
   isProvider: boolean;
 }
 

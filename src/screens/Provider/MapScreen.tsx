@@ -6,11 +6,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
 import Colors from '../../constants/Colors';
-import { ProviderStackParams } from '../../navigation';
+import { StackParams } from '../../navigation/types';
 
 interface Props {
-  route: RouteProp<ProviderStackParams, 'MapScreen'>;
-  navigation: StackNavigationProp<ProviderStackParams>;
+  route: RouteProp<StackParams, 'MapScreen'>;
+  navigation: StackNavigationProp<StackParams>;
 }
 
 const MapScreen = ({ navigation, route }: Props) => {

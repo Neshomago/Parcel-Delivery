@@ -7,11 +7,11 @@ import { RouteProp } from '@react-navigation/native';
 import { handleStatusImages } from '../../utils';
 import { API_URL } from '../../services';
 import Colors from '../../constants/Colors';
-import { CustomerStackParams } from '../../navigation';
+import { StackParams } from '../../navigation/types';
 
 interface Props {
-  navigation: StackNavigationProp<CustomerStackParams>;
-  route: RouteProp<CustomerStackParams, 'MainScreen'>;
+  navigation: StackNavigationProp<StackParams>;
+  route: RouteProp<StackParams, 'MainScreen'>;
 }
 interface History {
   fecha: string;

@@ -21,12 +21,12 @@ import Constants from '../../constants/Constants';
 import Signature from '../../components/Signature';
 import { getProviderOrder, updateProviderOrder } from '../../services';
 import { parseCodeToStatus } from '../../utils';
-import { ProviderStackParams, IOrder } from '../../navigation';
+import { StackParams, IOrder } from '../../navigation/types';
 import Dropdown from '../../components/Dropdown';
 
 interface Props {
-  route: RouteProp<ProviderStackParams, 'OrderScreen'>;
-  navigation: StackNavigationProp<ProviderStackParams>;
+  route: RouteProp<StackParams, 'OrderScreen'>;
+  navigation: StackNavigationProp<StackParams>;
 }
 
 const OrderScreen = ({ navigation, route }: Props) => {
