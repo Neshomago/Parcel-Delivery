@@ -17,6 +17,8 @@ target 'parcelDeliveryApp' do
 
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'parcelDeliveryAppTests' do
     inherit! :complete
     # Pods for testing

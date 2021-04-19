@@ -24,10 +24,13 @@ export const handleStatusImages = (
   }
 };
 
-export const setDataInStorage = (key: string, value: any): void => {
+export const setDataInStorage = async (
+  key: string,
+  value: any,
+): Promise<any> => {
   try {
     const data = JSON.stringify(value);
-    AsyncStorage.setItem(key, data);
+    await AsyncStorage.setItem(key, data);
   } catch (e) {
     console.error('Error while trying to save data in local storage', e);
   }
@@ -36,9 +39,17 @@ export const setDataInStorage = (key: string, value: any): void => {
 export const getDataFromStorage = async (key: string): Promise<any> => {
   try {
     const data = await AsyncStorage.getItem(key);
-    if (data !== null) return data;
+    if (data !== null) return JSON.parse(data);
   } catch (e) {
     console.error('Error while trying to get data from local storage', e);
+  }
+};
+
+export const deleteStorageData = async (): Promise<any> => {
+  try {
+    await AsyncStorage.clear();
+  } catch (e) {
+    console.error('Error while trying to wipe storage data', e);
   }
 };
 

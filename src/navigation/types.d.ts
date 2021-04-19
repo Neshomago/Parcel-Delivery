@@ -19,12 +19,19 @@ export interface IOrder {
   bl_firma: string;
 }
 
+export interface IAuthContext {
+  user: string | null;
+  errorMessage: string;
+  signin: (username: string, password: string) => void;
+  signout: () => void;
+}
+
 export type StackParams = {
   MainScreen: IMainScreen;
   StatusScreen: any;
   QRScanner: undefined;
   HistoryScreen: { orderNumber: string; history: IHistory[] };
-  LoginScreen: { userName: string };
+  LoginScreen: { user: string };
   OrdersScreen: { userName: string };
   OrderScreen: { id_cpte: string };
   MapScreen: { orders: IOrder[] };

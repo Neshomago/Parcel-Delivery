@@ -10,41 +10,49 @@ const axiosInstance = axios.create({
   headers: { Authorization: `Bearer  ${token}` },
 });
 
-export const logIn = (userName: string, password: string): Promise<any> => {
-  return axios.post(`${API_URL}/auth.php`, {
+export const loginService = async (
+  userName: string,
+  password: string,
+): Promise<any> => {
+  const { data } = await axios.post(`${API_URL}/auth.php`, {
     tx_login: userName,
     tx_pass: password,
   });
+  return data;
 };
 
-export const getUserOrder = (orderID: string): Promise<any> => {
-  return axios.post(`${API_URL}/pedido.php?`, {
+export const getUserOrder = async (orderID: string): Promise<any> => {
+  const { data } = await axios.post(`${API_URL}/pedido.php?`, {
     id_segui: orderID,
   });
+  return data;
 };
 
-export const getProviderOrders = (user: string): Promise<any> => {
-  return axios.post(`${API_URL}/pedidos.php?`, {
+export const getProviderOrders = async (user: string): Promise<any> => {
+  const response = await axios.post(`${API_URL}/pedidos.php?`, {
     tx_login: user,
   });
+  return response.data;
 };
 
-export const getProviderOrder = (orderID: string): Promise<any> => {
-  return axios.post(`${API_URL}/pedido.php?`, {
+export const getProviderOrder = async (orderID: string): Promise<any> => {
+  const response = await axios.post(`${API_URL}/pedido.php?`, {
     id_cpte: orderID,
   });
+  return response.data;
 };
 
-export const updateProviderOrder = (
+export const updateProviderOrder = async (
   orderID: string,
   status: string,
   signature: string,
   comments: string,
 ): Promise<any> => {
-  return axios.put(`${API_URL}/pedido.php?`, {
+  const response = await axios.put(`${API_URL}/pedido.php?`, {
     id_cpte: orderID,
     id_estado: status,
     bl_firma: signature,
     tx_detalle: comments,
   });
+  return response.data;
 };

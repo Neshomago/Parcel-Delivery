@@ -46,6 +46,7 @@ const OrderScreen = ({ navigation, route }: Props) => {
   const [signatureUrl, setSignatureUrl] = useState('');
   const [status, setStatus] = useState('');
   const [comments, setComments] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { id_cpte } = route.params;
   const {
@@ -66,15 +67,15 @@ const OrderScreen = ({ navigation, route }: Props) => {
   };
 
   const getOrder = async () => {
-    const response = await getProviderOrder(id_cpte);
-    if (!response) {
+    const data = await getProviderOrder(id_cpte);
+    if (!data) {
       console.error('Error getting order. Status code: ', response.status);
       return;
     }
-    setOrderData(response.data);
-    setSignatureUrl(response.data?.bl_firma);
-    setComments(response.data?.tx_detalle);
-    setStatus(response.data?.id_estado);
+    setOrderData(data);
+    setSignatureUrl(data?.bl_firma);
+    setComments(data?.tx_detalle);
+    setStatus(data?.id_estado);
   };
 
   const handleSubmit = async () => {
@@ -116,6 +117,9 @@ const OrderScreen = ({ navigation, route }: Props) => {
           />
         </TouchableWithoutFeedback>
         <ScrollView>
+          {errorMessage ? (
+            <Text style={styles.errorText}>Error obteniendo pedidos.</Text>
+          ) : null}
           <TouchableWithoutFeedback
             onPress={() => setSignatureModalOpen(false)}>
             <View style={styles.info}>
@@ -348,5 +352,11 @@ const styles = StyleSheet.create({
   indicator: {
     flex: 1,
     justifyContent: 'center',
+  },
+
+  errorText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: Colors.red,
   },
 });

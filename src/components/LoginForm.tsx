@@ -64,7 +64,6 @@ const LoginScreen = ({
 
           <Item>
             <MaterialIcons style={styles.icon} name="lock-outline" size={20} />
-
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.textInput}

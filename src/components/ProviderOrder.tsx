@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -51,14 +51,6 @@ const ProviderOrder = ({ data, navigation }: Props) => {
     if (isDelivered) return 'check-bold';
     if (hasInformation) return 'exclamation-thick';
   };
-
-  useEffect(() => {
-    console.log('isDelivered', isDelivered);
-  }, [isDelivered]);
-
-  useEffect(() => {
-    console.log('hasInformation', hasInformation);
-  }, [hasInformation]);
 
   return (
     <>

@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { AuthContext, ContextProvider } from '../context';
+import { AuthProvider } from '../hooks/useAuth';
 import MainScreen from '../screens/Customer/MainScreen';
 import StatusScreen from '../screens/Customer/StatusScreen';
 import HistoryScreen from '../screens/Customer/HistoryScreen';
@@ -20,13 +20,11 @@ import { StackParams, TabParams } from './types';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator<StackParams>();
-  const { isLoggedIn } = useContext(AuthContext);
 
   return (
     <NavigationContainer>
-      <ContextProvider>
-        <Stack.Navigator
-          initialRouteName={isLoggedIn ? 'MainScreen' : 'OrdersScreen'}>
+      <AuthProvider>
+        <Stack.Navigator initialRouteName={'MainScreen'}>
           <Stack.Screen
             name="MainScreen"
             component={TabNavigation}
@@ -83,14 +81,7 @@ const StackNavigation = () => {
             name="OrdersScreen"
             component={OrdersScreen}
             options={() => ({
-              title: 'Ordenes de entrega',
-              headerTitleStyle: { alignSelf: 'center' },
-              headerStyle: {
-                backgroundColor: Colors.purple2,
-                elevation: 0,
-              },
-              headerTintColor: Colors.white,
-              headerLeft: () => null,
+              headerShown: false,
             })}
           />
           <Stack.Screen
@@ -108,13 +99,14 @@ const StackNavigation = () => {
             }}
           />
         </Stack.Navigator>
-      </ContextProvider>
+      </AuthProvider>
     </NavigationContainer>
   );
 };
 
 const TabNavigation = () => {
   const Tab = createMaterialBottomTabNavigator<TabParams>();
+
   return (
     <Tab.Navigator
       activeColor={Colors.white}

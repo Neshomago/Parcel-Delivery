@@ -42,22 +42,19 @@ const MainScreen = ({ navigation }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleDataSend = (data: object) => {
-    data && navigation.navigate('StatusScreen', { data });
-  };
-
   const handleInput = (text: string) => {
     setOrderId(text.replace(/[^0-9a-zA-Z]/g, ''));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // if (!orderId || orderId.length < 22) return;
     setIsLoading(true);
-    getUserOrder(orderId)
-      .then((res) => {
-        handleDataSend(res.data);
-      })
-      .catch(() => setErrorMessage('Pedido inexistente'));
+    try {
+      const data = await getUserOrder(orderId);
+      data && navigation.navigate('StatusScreen', { data });
+    } catch {
+      setErrorMessage('Pedido inexistente');
+    }
 
     setIsLoading(false);
   };
@@ -103,14 +100,13 @@ const MainScreen = ({ navigation }: Props) => {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.touchableContainer}
+                style={styles.touchableIcon}
                 onPress={handleQRPress}>
-                <View>
-                  <Text style={styles.touchableText}>Escanear codigo QR</Text>
+                <View style={styles.iconContainer}>
                   <MaterialCommunityIcons
                     style={styles.icon}
                     name="qrcode-scan"
-                    size={25}
+                    size={40}
                   />
                 </View>
               </TouchableOpacity>
@@ -191,9 +187,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
+  touchableIcon: {
+    borderWidth: Constants.borderWidth * 2,
+    borderColor: Colors.white,
+    borderRadius: 100,
+    alignSelf: 'center',
+    padding: 20,
+    marginTop: 20,
+  },
+
+  iconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   icon: {
-    position: 'absolute',
-    right: 20,
     color: Colors.white,
   },
 
