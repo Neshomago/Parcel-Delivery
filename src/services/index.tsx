@@ -1,14 +1,6 @@
 import axios from 'axios';
-import { getDataFromStorage } from '../utils';
 
 export const API_URL = 'https://www.cintegrales.com.ar/seguimiento/API';
-const token = getDataFromStorage('AUTH_TOKEN');
-
-const axiosInstance = axios.create({
-  baseURL: API_URL,
-  timeout: 10000,
-  headers: { Authorization: `Bearer  ${token}` },
-});
 
 export const loginService = async (
   userName: string,
@@ -22,37 +14,47 @@ export const loginService = async (
 };
 
 export const getUserOrder = async (orderID: string): Promise<any> => {
-  const { data } = await axios.post(`${API_URL}/pedido.php?`, {
+  const response = await axios.post(`${API_URL}/pedido.php?`, {
     id_segui: orderID,
   });
-  return data;
+  return response;
 };
 
-export const getProviderOrders = async (user: string): Promise<any> => {
+export const getProviderOrders = async (
+  user: string,
+  token: string,
+): Promise<any> => {
   const response = await axios.post(`${API_URL}/pedidos.php?`, {
     tx_login: user,
+    jwt: token,
   });
-  return response.data;
+  return response;
 };
 
-export const getProviderOrder = async (orderID: string): Promise<any> => {
+export const getProviderOrder = async (
+  orderID: string,
+  token: string,
+): Promise<any> => {
   const response = await axios.post(`${API_URL}/pedido.php?`, {
     id_cpte: orderID,
+    jwt: token,
   });
-  return response.data;
+  return response;
 };
 
 export const updateProviderOrder = async (
   orderID: string,
+  token: string,
   status: string,
   signature: string,
   comments: string,
 ): Promise<any> => {
   const response = await axios.put(`${API_URL}/pedido.php?`, {
     id_cpte: orderID,
+    jwt: token,
     id_estado: status,
     bl_firma: signature,
     tx_detalle: comments,
   });
-  return response.data;
+  return response;
 };

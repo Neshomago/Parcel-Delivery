@@ -23,18 +23,21 @@ const CustomerOrder = ({ date, status, isFirst, isDisabled }: Props) => {
       )}
 
       <View style={styles.infoContainer}>
-        <View style={styles.imageContainer}>
-          <Image
-            style={styles.image}
-            source={handleStatusImages(status, isDisabled)}
-          />
-        </View>
+        <Image
+          style={styles.image}
+          source={handleStatusImages(status, isDisabled)}
+        />
         <View style={styles.statusData}>
-          <Text style={[styles.text, isDisabled && styles.disabledText]}>
-            {`${date}  -`}
+          <Text
+            style={[
+              styles.text,
+              styles.statusText,
+              isDisabled && styles.disabledText,
+            ]}>
+            {status}
           </Text>
           <Text style={[styles.text, isDisabled && styles.disabledText]}>
-            {status}
+            {date}
           </Text>
         </View>
       </View>
@@ -46,24 +49,30 @@ export default CustomerOrder;
 
 const styles = StyleSheet.create({
   container: {
+    marginHorizontal: 20,
     alignItems: 'center',
   },
   infoContainer: {
     alignItems: 'center',
+    flexDirection: 'row',
   },
-  imageContainer: {},
+
   image: {
-    width: 80,
-    height: 80,
+    width: 90,
+    height: 90,
     resizeMode: 'contain',
   },
   statusData: {
-    flexDirection: 'row',
+    marginLeft: 15,
   },
   text: {
     marginRight: 10,
     fontSize: 18,
     color: Colors.white,
+  },
+  statusText: {
+    fontSize: 22,
+    fontWeight: 'bold',
   },
 
   disabledText: {

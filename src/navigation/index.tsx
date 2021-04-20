@@ -61,7 +61,7 @@ const StackNavigation = () => {
             name="HistoryScreen"
             component={HistoryScreen}
             options={{
-              title: 'Historial de orden numero:',
+              title: 'Historial de pedido',
               animationEnabled: false,
               headerStyle: {
                 backgroundColor: Colors.purple3,

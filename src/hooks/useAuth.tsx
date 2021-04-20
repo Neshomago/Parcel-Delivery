@@ -1,23 +1,10 @@
-import React, {
-  FC,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC, createContext, useContext, useState } from 'react';
 
-import {
-  getDataFromStorage,
-  setDataInStorage,
-  deleteStorageData,
-} from '../utils';
+import { setDataInStorage, deleteStorageData, AUTH_DATA } from '../utils';
 import { loginService } from '../services';
 import { IAuthContext } from '../navigation/types';
 
-export const AUTH_DATA = 'AUTH_DATA';
-
 const authContext = createContext<IAuthContext>({
-  user: '',
   errorMessage: '',
   signin: () => {},
   signout: () => {},
@@ -33,14 +20,12 @@ export const useAuth = () => {
 };
 
 const useAuthProvider = () => {
-  const [user, setUser] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const signin = async (userName: string, password: string): Promise<any> => {
     try {
       const data = await loginService(userName, password);
       if (data) {
-        setUser(userName);
         setDataInStorage(AUTH_DATA, data);
         return data;
       }
@@ -54,7 +39,6 @@ const useAuthProvider = () => {
   };
 
   return {
-    user,
     errorMessage,
     signin,
     signout,

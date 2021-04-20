@@ -38,7 +38,7 @@ interface Props {
 }
 
 const MainScreen = ({ navigation }: Props) => {
-  const [orderId, setOrderId] = useState('004803000X00025XZ0ZBEW');
+  const [orderId, setOrderId] = useState('004703000X00025XZ0Z3J9');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -50,7 +50,7 @@ const MainScreen = ({ navigation }: Props) => {
     // if (!orderId || orderId.length < 22) return;
     setIsLoading(true);
     try {
-      const data = await getUserOrder(orderId);
+      const { data } = await getUserOrder(orderId);
       data && navigation.navigate('StatusScreen', { data });
     } catch {
       setErrorMessage('Pedido inexistente');

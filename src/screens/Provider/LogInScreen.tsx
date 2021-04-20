@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import { getDataFromStorage } from '../../utils';
+import { getDataFromStorage, deleteStorageData } from '../../utils';
 import LoginForm from '../../components/LoginForm';
 import { useAuth, AUTH_DATA } from '../../hooks/useAuth';
 import { StackParams } from '../../navigation/types';
@@ -36,8 +36,8 @@ const LogInScreen = ({ navigation }: Props) => {
     auth
       .signin(userName, password)
       .then(
-        (res: any) =>
-          res.jwt && navigation.navigate('OrdersScreen', { userName }),
+        (data: any) =>
+          data.jwt && navigation.navigate('OrdersScreen', { userName }),
       )
       .catch(() => setErrorMessage('Usuario o contraseña incorrectas'));
 
@@ -49,10 +49,10 @@ const LogInScreen = ({ navigation }: Props) => {
   }, [auth.errorMessage]);
 
   useEffect(() => {
-    // deleteStorageData();
-    getDataFromStorage(AUTH_DATA)
-      .then((res) => console.log('TK', res.data))
-      .catch((err) => console.log('TKERR', err));
+    deleteStorageData();
+    // getDataFromStorage(AUTH_DATA)
+    //   .then((res) => console.log('TK', res.data))
+    //   .catch((err) => console.log('TKERR', err));
   }, []);
 
   return (

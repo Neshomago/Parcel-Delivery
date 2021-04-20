@@ -9,6 +9,7 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { isOrderDelivered } from '../utils';
 import Colors from '../constants/Colors';
 import { StackParams } from '../navigation/types';
 interface Props {
@@ -27,29 +28,16 @@ interface Props {
 const ProviderOrder = ({ data, navigation }: Props) => {
   const { id_cpte, nombre_cliente, direccion, nu_paquetes, id_estado } = data;
 
-  const isDelivered = useMemo(
-    () => id_estado === ('4' || '5' || '9' || '18' || '21' || '24'),
-    [id_estado],
-  );
-
-  const hasInformation = useMemo(() => id_estado === ('6' || '7' || '14'), [
-    id_estado,
-  ]);
-
   const handleTouch = (): void => {
     id_cpte && navigation.navigate('OrderScreen', { id_cpte });
   };
 
-  const handleDeliverColor = (): object => {
-    if (isDelivered) return { color: Colors.lightGreen };
-    if (hasInformation) return { color: Colors.mediumBlue };
-    return {};
-    // if (orderStatus === 'Rechazado') return { color: Colors.red };
+  const handleDeliverColor = (): any => {
+    if (isOrderDelivered(id_estado)) return { color: Colors.lightGreen };
   };
 
-  const handleIcon = () => {
-    if (isDelivered) return 'check-bold';
-    if (hasInformation) return 'exclamation-thick';
+  const handleIcon = (): any => {
+    if (isOrderDelivered(id_estado)) return 'check-bold';
   };
 
   return (
@@ -61,7 +49,7 @@ const ProviderOrder = ({ data, navigation }: Props) => {
       />
       <TouchableNativeFeedback onPress={handleTouch}>
         <View style={styles.container}>
-          <View style={isDelivered && styles.overlay} />
+          <View style={isOrderDelivered(id_estado) && styles.overlay} />
           <View style={styles.topContainer}>
             <Text style={styles.topText}>N°: {id_cpte}</Text>
           </View>

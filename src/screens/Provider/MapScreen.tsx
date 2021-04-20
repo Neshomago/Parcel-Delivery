@@ -5,6 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
+import { isOrderDelivered } from '../../utils';
 import Colors from '../../constants/Colors';
 import { StackParams } from '../../navigation/types';
 
@@ -44,7 +45,7 @@ const MapScreen = ({ navigation, route }: Props) => {
             key={order.id_cpte}
             identifier={order.id_cpte}
             pinColor={
-              order.id_estado === 'Entregado' ? Colors.lightGreen : Colors.red
+              isOrderDelivered(order.id_estado) ? Colors.lightGreen : Colors.red
             }
             coordinate={{
               latitude: parseFloat(order.latitud),

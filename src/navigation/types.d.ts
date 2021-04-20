@@ -1,4 +1,5 @@
 export interface IHistory {
+  id: string;
   fecha: string;
   estado: string;
 }
@@ -20,7 +21,6 @@ export interface IOrder {
 }
 
 export interface IAuthContext {
-  user: string | null;
   errorMessage: string;
   signin: (username: string, password: string) => void;
   signout: () => void;

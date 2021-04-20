@@ -6,6 +6,8 @@ import deliveredImage from '../../assets/delivered.png';
 import disDeliveredImage from '../../assets/delivered_disabled.png';
 import naviraImage from '../../assets/navira.png';
 
+export const AUTH_DATA = 'AUTH_DATA';
+
 export const handleStatusImages = (
   status: string,
   isDisabled: boolean = false,
@@ -52,6 +54,9 @@ export const deleteStorageData = async (): Promise<any> => {
     console.error('Error while trying to wipe storage data', e);
   }
 };
+
+export const isOrderDelivered = (status: string) =>
+  status === ('4' || '5' || '9' || '18' || '21' || '24');
 
 export const parseCodeToStatus = (
   code: string,

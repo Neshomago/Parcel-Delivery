@@ -13,7 +13,7 @@ interface Props {
 }
 
 const HistoryScreen = ({ route }: Props) => {
-  const { orderNumber, history } = route.params;
+  const { history } = route.params;
 
   return (
     <View style={styles.container}>
@@ -26,9 +26,6 @@ const HistoryScreen = ({ route }: Props) => {
         colors={[Colors.purple3, Colors.purple]}
         style={styles.linearGradient}
         start={{ x: 0.7, y: 0.3 }}>
-        <View style={styles.orderContainer}>
-          <Text style={styles.orderNumber}>{orderNumber}</Text>
-        </View>
         <View style={styles.ordersHistory}>
           {history.map((order: any, index: number) => (
             <Order

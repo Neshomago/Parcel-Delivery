@@ -14,7 +14,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp, useIsFocused } from '@react-navigation/native';
 
 import { useAuth } from '../../hooks/useAuth';
-import { getDataFromStorage } from '../../utils';
+import { getDataFromStorage, AUTH_DATA } from '../../utils';
 import { getProviderOrders } from '../../services';
 import ProviderOrder from '../../components/ProviderOrder';
 import Colors from '../../constants/Colors';
@@ -42,22 +42,6 @@ const OrdersScreen = ({ navigation, route }: Props) => {
 
   const auth = useAuth();
 
-  const compareToken = async () => {
-    try {
-      const token = await getDataFromStorage('AUTH_TOKEN');
-
-      if (token) getOrders();
-      else
-        navigation.reset({
-          index: 0,
-          //@ts-ignore
-          actions: [navigation.navigate({ routeName: 'LoginScreen' })],
-        });
-    } catch (e) {
-      console.error('Error while trying to get data from local storage', e);
-    }
-  };
-
   const handleLogout = () => {
     auth.signout();
     navigation.navigate('LoginScreen');
@@ -66,7 +50,8 @@ const OrdersScreen = ({ navigation, route }: Props) => {
   const getOrders = async () => {
     if (!userName) return;
     setLoading(true);
-    const data = await getProviderOrders(userName);
+    const storageData = await getDataFromStorage(AUTH_DATA);
+    const { data } = await getProviderOrders(userName, storageData.jwt);
     if (!data) {
       setErrorMessage('Error al obtener orden');
       return;

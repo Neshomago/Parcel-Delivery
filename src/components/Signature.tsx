@@ -67,19 +67,19 @@ const Signature = ({ shown, hideModal, setEncodedUrl }: Props) => {
 
           <View style={styles.buttonsContainer}>
             <TouchableHighlight
-              style={styles.button}
+              style={[styles.button, styles.saveButton]}
               onPress={() => {
                 saveImage();
               }}>
-              <Text>Guardar</Text>
+              <Text style={styles.text}>Guardar</Text>
             </TouchableHighlight>
 
             <TouchableHighlight
-              style={styles.button}
+              style={[styles.button, styles.deleteButton]}
               onPress={() => {
                 resetImage();
               }}>
-              <Text>Limpiar</Text>
+              <Text style={styles.text}>Borrar</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -131,7 +131,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 50,
     margin: 10,
-    borderWidth: 1,
     borderRadius: 30,
+  },
+
+  saveButton: {
+    backgroundColor: Colors.lightGreen,
+  },
+
+  deleteButton: {
+    backgroundColor: Colors.red,
+  },
+
+  text: {
+    fontSize: 20,
+    color: Colors.white,
   },
 });

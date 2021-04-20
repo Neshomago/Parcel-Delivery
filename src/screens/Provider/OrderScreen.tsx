@@ -19,8 +19,8 @@ import { RouteProp } from '@react-navigation/native';
 import Colors from '../../constants/Colors';
 import Constants from '../../constants/Constants';
 import Signature from '../../components/Signature';
+import { getDataFromStorage, AUTH_DATA, parseCodeToStatus } from '../../utils';
 import { getProviderOrder, updateProviderOrder } from '../../services';
-import { parseCodeToStatus } from '../../utils';
 import { StackParams, IOrder } from '../../navigation/types';
 import Dropdown from '../../components/Dropdown';
 
@@ -47,15 +47,16 @@ const OrderScreen = ({ navigation, route }: Props) => {
   const [status, setStatus] = useState('');
   const [comments, setComments] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isMapShowing, setMapShowing] = useState(true);
 
   const { id_cpte } = route.params;
   const {
     nombre_cliente,
     direccion,
     nu_paquetes,
-    id_estado,
     latitud,
     longitud,
+    id_estado,
   } = orderData;
 
   const toggleSignatureModal = (): void => {
@@ -67,18 +68,24 @@ const OrderScreen = ({ navigation, route }: Props) => {
   };
 
   const getOrder = async () => {
-    const data = await getProviderOrder(id_cpte);
+    const storageData = await getDataFromStorage(AUTH_DATA);
+
+    const { data, status: statusCode } = await getProviderOrder(
+      id_cpte,
+      storageData?.jwt,
+    );
     if (!data) {
-      console.error('Error getting order. Status code: ', response.status);
+      console.error('Error getting order. Status code: ', statusCode);
       return;
     }
     setOrderData(data);
-    setSignatureUrl(data?.bl_firma);
-    setComments(data?.tx_detalle);
-    setStatus(data?.id_estado);
+    setSignatureUrl(data.bl_firma);
+    setComments(data.tx_detalle);
   };
 
   const handleSubmit = async () => {
+    const storageData = await getDataFromStorage(AUTH_DATA);
+
     if (!status) {
       Alert.alert('Debe seleccionar un estado');
       return;
@@ -87,9 +94,16 @@ const OrderScreen = ({ navigation, route }: Props) => {
       Alert.alert('La entrega debe estar firmada y/o comentada');
       return;
     }
+
     setLoading(true);
     try {
-      await updateProviderOrder(id_cpte, status, signatureUrl, comments);
+      await updateProviderOrder(
+        id_cpte,
+        storageData.jwt,
+        status,
+        signatureUrl,
+        comments,
+      );
     } catch {
       Alert.alert(
         'Error intentando guardar el pedido. Vuelva a intentar mas tarde',
@@ -133,7 +147,7 @@ const OrderScreen = ({ navigation, route }: Props) => {
                 ]}>
                 <View>
                   <Text style={[styles.text, { color: Colors.lightGreen }]}>
-                    {status && parseCodeToStatus(id_estado, false)}
+                    {parseCodeToStatus(id_estado)}
                   </Text>
                 </View>
 
@@ -147,8 +161,41 @@ const OrderScreen = ({ navigation, route }: Props) => {
                   <Text style={styles.text}>{nu_paquetes}</Text>
                 </View>
               </View>
-              {signatureUrl ? (
-                <View style={styles.signatureContainer}>
+
+              <View style={styles.signatureMapContainer}>
+                <TouchableWithoutFeedback
+                  onPress={() => setMapShowing(!isMapShowing)}>
+                  <MaterialCommunityIcons
+                    name={
+                      isMapShowing ? 'signature-freehand' : 'map-marker-radius'
+                    }
+                    size={45}
+                    color={Colors.darkBlue}
+                    style={styles.signatureMapIcon}
+                  />
+                </TouchableWithoutFeedback>
+                {isMapShowing ? (
+                  <>
+                    {orderData.latitud !== '0' ? (
+                      <MapView
+                        provider={PROVIDER_GOOGLE}
+                        style={styles.map}
+                        initialRegion={{
+                          latitude: parseFloat(latitud),
+                          longitude: parseFloat(longitud),
+                          latitudeDelta: 0.0112, //Check this values. Marker is not being centered properly
+                          longitudeDelta: 0.0075, //Check this values. Marker is not being centered properly
+                        }}>
+                        <Marker
+                          coordinate={{
+                            latitude: parseFloat(latitud),
+                            longitude: parseFloat(longitud),
+                          }}
+                        />
+                      </MapView>
+                    ) : null}
+                  </>
+                ) : (
                   <Image
                     resizeMode={'stretch'}
                     style={styles.signatureImage}
@@ -156,29 +203,8 @@ const OrderScreen = ({ navigation, route }: Props) => {
                       uri: `data:image/jpeg;base64,${signatureUrl}`,
                     }}
                   />
-                </View>
-              ) : (
-                <View style={styles.mapContainer}>
-                  {orderData.latitud !== '0' ? (
-                    <MapView
-                      provider={PROVIDER_GOOGLE}
-                      style={styles.map}
-                      initialRegion={{
-                        latitude: parseFloat(latitud),
-                        longitude: parseFloat(longitud),
-                        latitudeDelta: 0.0112, //Check this values. Marker is not being centered properly
-                        longitudeDelta: 0.0075, //Check this values. Marker is not being centered properly
-                      }}>
-                      <Marker
-                        coordinate={{
-                          latitude: parseFloat(latitud),
-                          longitude: parseFloat(longitud),
-                        }}
-                      />
-                    </MapView>
-                  ) : null}
-                </View>
-              )}
+                )}
+              </View>
               <TouchableHighlight
                 style={styles.button}
                 onPress={() => {
@@ -283,24 +309,24 @@ const styles = StyleSheet.create({
     marginRight: 2,
   },
 
-  signatureContainer: {
+  signatureMapContainer: {
     height: 300,
     width: '100%',
     justifyContent: 'center',
-    alignItems: 'center',
     marginVertical: 10,
+    position: 'relative',
   },
 
   signatureImage: {
     height: 300,
-    width: 300,
+    width: '100%',
   },
 
-  mapContainer: {
-    height: 300,
-    width: '100%',
-    justifyContent: 'center',
-    marginVertical: 10,
+  signatureMapIcon: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    zIndex: 10,
   },
 
   map: {
