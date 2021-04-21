@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -12,10 +12,10 @@ import {
   View,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import LinearGradient from 'react-native-linear-gradient';
 import { useIsFocused } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { API_URL } from '../../services';
 import Constants from '../../constants/Constants';
 import Colors from '../../constants/Colors';
 import { getUserOrder } from '../../services';
@@ -38,9 +38,10 @@ interface Props {
 }
 
 const MainScreen = ({ navigation }: Props) => {
-  const [orderId, setOrderId] = useState('004703000X00025XZ0Z3J9');
+  const [orderId, setOrderId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [providerID, setProviderID] = useState('');
 
   const handleInput = (text: string) => {
     setOrderId(text.replace(/[^0-9a-zA-Z]/g, ''));
@@ -62,63 +63,65 @@ const MainScreen = ({ navigation }: Props) => {
   const handleQRPress = () => {
     navigation.navigate('QRScanner');
   };
+  useEffect(() => {
+    if (orderId.length > 3) setProviderID(orderId.slice(0, 4));
+    else setProviderID('');
+  }, [orderId]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <LinearGradient
-          colors={[Colors.purple3, Colors.purple3]}
-          style={styles.linearGradient}
-          start={{ x: 0.7, y: 0.3 }}>
-          <FocusAwareStatusBar
-            barStyle="light-content"
-            backgroundColor={Colors.purple3}
+        <FocusAwareStatusBar
+          backgroundColor="transparent"
+          barStyle="light-content"
+          translucent={true}
+        />
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.logo}
+            source={
+              providerID
+                ? { uri: `${API_URL}/logos/${providerID}.png` }
+                : require('../../../assets/navira.png')
+            }
           />
-          <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={require('../../../assets/navira.png')}
+        </View>
+        <View style={styles.infoContainer}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={(text) => handleInput(text)}
+              value={orderId}
+              placeholder="Introduzca su numero de envio"
+              placeholderTextColor={Colors.white}
+              maxLength={22}
             />
           </View>
-          <View style={styles.cardContainer}>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.textInput}
-                onChangeText={(text) => handleInput(text)}
-                value={orderId}
-                placeholder="Introduzca su numero de envio"
-                placeholderTextColor={Colors.white}
-                maxLength={22}
-              />
-            </View>
-            <View style={styles.buttons}>
-              <TouchableOpacity
-                style={styles.touchableContainer}
-                onPress={handleSubmit}>
-                <View>
-                  <Text style={styles.touchableText}>Consultar</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.touchableIcon}
-                onPress={handleQRPress}>
-                <View style={styles.iconContainer}>
-                  <MaterialCommunityIcons
-                    style={styles.icon}
-                    name="qrcode-scan"
-                    size={40}
-                  />
-                </View>
-              </TouchableOpacity>
-            </View>
-            {errorMessage ? (
-              <Text style={styles.errorText}>{errorMessage}</Text>
-            ) : null}
-            {isLoading && (
-              <ActivityIndicator size="large" color={Colors.white} />
-            )}
+          <View style={styles.buttons}>
+            <TouchableOpacity
+              style={styles.touchableContainer}
+              onPress={handleSubmit}>
+              <View>
+                <Text style={styles.touchableText}>Consultar</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.touchableIcon}
+              onPress={handleQRPress}>
+              <View style={styles.iconContainer}>
+                <MaterialCommunityIcons
+                  style={styles.icon}
+                  name="qrcode-scan"
+                  size={40}
+                />
+              </View>
+            </TouchableOpacity>
           </View>
-        </LinearGradient>
+          {errorMessage ? (
+            <Text style={styles.errorText}>{errorMessage}</Text>
+          ) : null}
+          {isLoading && <ActivityIndicator size="large" color={Colors.white} />}
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -127,18 +130,14 @@ const MainScreen = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-
-  linearGradient: {
-    flex: 1,
-    width: '100%',
+    backgroundColor: Colors.dark,
     alignItems: 'center',
   },
 
   logoContainer: {
     width: '90%',
     marginTop: 100,
-    marginBottom: 50,
+    marginBottom: 100,
   },
 
   logo: {
@@ -147,9 +146,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 
-  cardContainer: {
+  infoContainer: {
+    flex: 1,
     alignItems: 'center',
-    alignSelf: 'center',
     width: '90%',
   },
 

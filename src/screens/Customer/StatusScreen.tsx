@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Image, StatusBar, StyleSheet, Text, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import {
+  Image,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableNativeFeedback,
+  View,
+} from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
@@ -43,26 +49,22 @@ const StatusScreen = ({ navigation, route }: Props) => {
         barStyle="light-content"
         translucent={true}
       />
-      <LinearGradient
-        colors={[Colors.purple3, Colors.purple]}
-        style={styles.linearGradient}
-        start={{ x: 0.7, y: 0.3 }}>
-        <View style={styles.orderInfo}>
-          <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={{
-                uri: `${API_URL}/logos/${providerID}.png`,
-              }}
-            />
-          </View>
-          <Text style={styles.orderNumber}>{orderNumber || 0}</Text>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              source={handleStatusImages(orderStatus)}
-            />
-          </View>
+      <Text style={styles.title}>Detalle de pedido</Text>
+      <Text style={styles.orderNumber}>{orderNumber || 0}</Text>
+      <View style={styles.orderInfo}>
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.logo}
+            source={{
+              uri: `${API_URL}/logos/${providerID}.png`,
+            }}
+          />
+        </View>
+        <View style={styles.middleContainer}>
+          <Image
+            style={styles.image}
+            source={handleStatusImages(orderStatus)}
+          />
           <Text
             style={[
               styles.orderStatus,
@@ -72,13 +74,13 @@ const StatusScreen = ({ navigation, route }: Props) => {
             ]}>
             {orderStatus}
           </Text>
-          <View style={styles.seeHistoryContainer}>
-            <Text style={styles.seeHistoryText} onPress={handleSubmit}>
-              Ver Historial
-            </Text>
-          </View>
         </View>
-      </LinearGradient>
+      </View>
+      <TouchableNativeFeedback onPress={handleSubmit}>
+        <View style={styles.seeHistoryContainer}>
+          <Text style={styles.seeHistoryText}>Ver Historial</Text>
+        </View>
+      </TouchableNativeFeedback>
     </View>
   );
 };
@@ -88,27 +90,13 @@ export default StatusScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.dark,
     alignItems: 'center',
   },
 
-  linearGradient: {
-    flex: 1,
-    width: '100%',
-  },
-
-  logoContainer: {
-    width: '90%',
-    alignSelf: 'center',
-  },
-
-  logo: {
-    width: '100%',
-    height: 100,
-    resizeMode: 'contain',
-  },
-
-  orderInfo: {
-    flex: 1,
+  title: {
+    fontSize: 38,
+    color: Colors.white,
   },
 
   orderNumber: {
@@ -120,8 +108,24 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 
-  imageContainer: {
-    width: '50%',
+  orderInfo: {
+    width: '100%',
+    justifyContent: 'space-between',
+    marginVertical: 30,
+  },
+
+  logoContainer: {
+    width: '100%',
+    alignSelf: 'center',
+  },
+
+  logo: {
+    width: '100%',
+    resizeMode: 'contain',
+  },
+
+  middleContainer: {
+    width: '100%',
     alignItems: 'center',
     alignSelf: 'center',
   },
@@ -140,13 +144,15 @@ const styles = StyleSheet.create({
   },
 
   seeHistoryContainer: {
-    flex: 1,
-    marginTop: 20,
+    borderWidth: 2,
+    borderColor: Colors.white,
+    borderRadius: 50,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
   },
   seeHistoryText: {
-    fontSize: 18,
+    fontSize: 20,
     color: Colors.white,
     textAlign: 'center',
-    textDecorationLine: 'underline',
   },
 });

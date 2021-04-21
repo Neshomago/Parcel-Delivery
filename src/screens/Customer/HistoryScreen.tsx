@@ -22,22 +22,18 @@ const HistoryScreen = ({ route }: Props) => {
         barStyle="light-content"
         translucent={true}
       />
-      <LinearGradient
-        colors={[Colors.purple3, Colors.purple]}
-        style={styles.linearGradient}
-        start={{ x: 0.7, y: 0.3 }}>
-        <View style={styles.ordersHistory}>
-          {history.map((order: any, index: number) => (
-            <Order
-              key={index}
-              date={order?.fecha}
-              status={order?.estado}
-              isFirst={index === 0}
-              isDisabled={false}
-            />
-          ))}
-        </View>
-      </LinearGradient>
+      <Text style={styles.title}>Historial de pedido</Text>
+      <View style={styles.ordersHistory}>
+        {history.map((order: any, index: number) => (
+          <Order
+            key={index}
+            date={order?.fecha}
+            status={order?.estado}
+            isFirst={index === 0}
+            isDisabled={false}
+          />
+        ))}
+      </View>
     </View>
   );
 };
@@ -47,18 +43,19 @@ export default HistoryScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.dark,
     alignItems: 'center',
   },
 
-  linearGradient: {
-    flex: 1,
-    width: '100%',
+  title: {
+    fontSize: 38,
+    color: Colors.white,
   },
 
   orderContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
+    marginVertical: 20,
   },
 
   orderNumber: {

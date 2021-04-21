@@ -51,8 +51,9 @@ const QRScanner = ({ navigation, isProvider = false }: Props) => {
   return (
     <>
       <FocusAwareStatusBar
+        backgroundColor="transparent"
         barStyle="light-content"
-        backgroundColor={Colors.purple3}
+        translucent={true}
       />
       <QRCodeScanner
         onRead={onSuccess}
@@ -68,7 +69,9 @@ const QRScanner = ({ navigation, isProvider = false }: Props) => {
         customMarker={
           <View style={styles.rectangleContainer}>
             <View style={styles.topOverlay}>
-              <Text style={styles.mainText}>SCANNER QR</Text>
+              <Text style={styles.mainText}>
+                Ubicá el codigo QR dentro del recuadro
+              </Text>
             </View>
 
             <View style={styles.midOverlayContainer}>
@@ -97,6 +100,7 @@ const QRScanner = ({ navigation, isProvider = false }: Props) => {
                 style={styles.rightIcon}
                 name={isTorchOn ? 'flashlight' : 'flashlight-off'}
                 size={28}
+                color={Colors.white}
                 onPress={handleTorch}
               />
             </TouchableWithoutFeedback>
@@ -112,10 +116,6 @@ const overlayColor = 'rgba(0,0,0,0.5)'; // this gives us a black color with a 50
 const rectDimensions = width * 0.65; // this is equivalent to 255 from a 393 device width
 const rectBorderWidth = width * 0.005; // this is equivalent to 2 from a 393 device width
 const rectBorderColor = 'red';
-
-const scanBarWidth = width * 0.46; // this is equivalent to 180 from a 393 device width
-const scanBarHeight = width * 0.0025; //this is equivalent to 1 from a 393 device width
-const scanBarColor = '#22ff00';
 
 const styles = StyleSheet.create({
   rectangleContainer: {
@@ -134,8 +134,9 @@ const styles = StyleSheet.create({
   },
 
   mainText: {
-    fontSize: 30,
+    fontSize: 32,
     color: 'white',
+    textAlign: 'center',
   },
   midOverlayContainer: {
     flexDirection: 'row',
@@ -167,21 +168,16 @@ const styles = StyleSheet.create({
 
   leftIcon: {
     position: 'absolute',
-    top: 10,
+    top: 30,
     left: 10,
     zIndex: 99,
   },
 
   rightIcon: {
     position: 'absolute',
-    top: 10,
+    top: 30,
     right: 15,
     zIndex: 99,
-  },
-  scanBar: {
-    width: scanBarWidth,
-    height: scanBarHeight,
-    backgroundColor: scanBarColor,
   },
 });
 
