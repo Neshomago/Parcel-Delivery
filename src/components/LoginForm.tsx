@@ -95,9 +95,42 @@ const LoginScreen = ({
             <Text style={styles.errorText}>{errorMessage}</Text>
           ) : null}
           {isLoading ? <ActivityIndicator size="large" color="#fff" /> : null}
+          <>
+            <Text
+              style={{
+                marginTop: 10,
+                color: 'white',
+                fontSize: 18,
+                lineHeight: 25,
+                textAlign: 'center',
+              }}>
+              Usuarios de prueba:
+            </Text>
+            <Text
+              selectable
+              style={{
+                marginTop: 10,
+                color: Colors.lightGreen,
+                fontSize: 18,
+                lineHeight: 30,
+                textAlign: 'center',
+              }}>
+              arce / arce
+            </Text>
+            <Text
+              selectable
+              style={{
+                marginTop: 10,
+                color: Colors.lightGreen,
+                fontSize: 18,
+                lineHeight: 30,
+                textAlign: 'center',
+              }}>
+              mensacad / mensacad
+            </Text>
+          </>
         </View>
       </ImageBackground>
-      {/* </LinearGradient> */}
     </View>
   );
 };

@@ -57,6 +57,7 @@ const OrderScreen = ({ navigation, route }: Props) => {
     latitud,
     longitud,
     id_estado,
+    bl_firma,
   } = orderData;
 
   const toggleSignatureModal = (): void => {
@@ -119,6 +120,10 @@ const OrderScreen = ({ navigation, route }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id_cpte]);
 
+  useEffect(() => {
+    if (signatureUrl || bl_firma) setMapShowing(false);
+  }, [signatureUrl, bl_firma]);
+
   return (
     <>
       <View style={styles.container}>
@@ -140,11 +145,18 @@ const OrderScreen = ({ navigation, route }: Props) => {
               <Text style={styles.title}>O.N: {id_cpte}</Text>
               <Text style={styles.customerName}>{nombre_cliente}</Text>
               <Text style={styles.text}>{direccion}</Text>
-              <View
-                style={[
-                  styles.infoBottomContainer,
-                  status !== '' ? styles.justifyBetween : styles.justifyCenter,
-                ]}>
+              <View style={styles.bottomContainer}>
+                <TouchableWithoutFeedback
+                  onPress={() => setMapShowing(!isMapShowing)}>
+                  <MaterialCommunityIcons
+                    name={
+                      isMapShowing ? 'signature-freehand' : 'map-marker-radius'
+                    }
+                    size={35}
+                    color={Colors.purple2}
+                    style={styles.signatureMapIcon}
+                  />
+                </TouchableWithoutFeedback>
                 <View>
                   <Text style={[styles.text, { color: Colors.lightGreen }]}>
                     {parseCodeToStatus(id_estado)}
@@ -154,26 +166,15 @@ const OrderScreen = ({ navigation, route }: Props) => {
                 <View style={styles.packagesContainer}>
                   <MaterialCommunityIcons
                     name="package-variant-closed"
-                    size={20}
+                    size={25}
                     color={Colors.white}
                     style={styles.packagesIcon}
                   />
-                  <Text style={styles.text}>{nu_paquetes}</Text>
+                  <Text style={styles.packageText}>{nu_paquetes}</Text>
                 </View>
               </View>
 
               <View style={styles.signatureMapContainer}>
-                <TouchableWithoutFeedback
-                  onPress={() => setMapShowing(!isMapShowing)}>
-                  <MaterialCommunityIcons
-                    name={
-                      isMapShowing ? 'signature-freehand' : 'map-marker-radius'
-                    }
-                    size={45}
-                    color={Colors.darkBlue}
-                    style={styles.signatureMapIcon}
-                  />
-                </TouchableWithoutFeedback>
                 {isMapShowing ? (
                   <>
                     {orderData.latitud !== '0' ? (
@@ -210,9 +211,7 @@ const OrderScreen = ({ navigation, route }: Props) => {
                 onPress={() => {
                   setSignatureModalOpen(true);
                 }}>
-                <Text style={styles.buttonText}>
-                  {!signatureUrl ? 'Firma' : 'Editar Firma'}
-                </Text>
+                <Text style={styles.buttonText}>Firma</Text>
               </TouchableHighlight>
               <View style={styles.pickerContainer}>
                 <Dropdown status={status} setStatus={setStatus} />
@@ -285,19 +284,12 @@ const styles = StyleSheet.create({
     color: Colors.whitish,
   },
 
-  infoBottomContainer: {
+  bottomContainer: {
     width: '100%',
     flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingTop: 5,
-  },
-
-  justifyBetween: {
-    justifyContent: 'space-between',
-  },
-
-  justifyCenter: {
-    justifyContent: 'center',
   },
 
   packagesContainer: {
@@ -307,6 +299,11 @@ const styles = StyleSheet.create({
 
   packagesIcon: {
     marginRight: 2,
+  },
+
+  packageText: {
+    color: Colors.white,
+    fontSize: 22,
   },
 
   signatureMapContainer: {
@@ -322,12 +319,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 
-  signatureMapIcon: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    zIndex: 10,
-  },
+  signatureMapIcon: {},
 
   map: {
     width: '100%',

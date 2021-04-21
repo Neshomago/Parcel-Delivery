@@ -64,8 +64,9 @@ const OrdersScreen = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     getOrders();
+    setConfigOpen(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userName]);
 
   return (
     <>

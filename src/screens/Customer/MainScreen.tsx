@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Image,
   Keyboard,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -38,7 +39,7 @@ interface Props {
 }
 
 const MainScreen = ({ navigation }: Props) => {
-  const [orderId, setOrderId] = useState('');
+  const [orderId, setOrderId] = useState('004703000X000500003160');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [providerID, setProviderID] = useState('');
@@ -116,6 +117,31 @@ const MainScreen = ({ navigation }: Props) => {
                 />
               </View>
             </TouchableOpacity>
+            <ScrollView>
+              <Text
+                style={{
+                  marginTop: 10,
+                  color: 'white',
+                  fontSize: 18,
+                  lineHeight: 25,
+                  textAlign: 'center',
+                }}>
+                Ordenes de prueba:
+              </Text>
+              <Text
+                selectable
+                style={{
+                  marginTop: 10,
+                  color: Colors.lightGreen,
+                  fontSize: 18,
+                  lineHeight: 30,
+                  textAlign: 'center',
+                }}>
+                004703000X000500003160 004803000X000500003152
+                004803000X00025XZ0ZBEW 004703000X00025XZ0Z94H
+                004703000X00025XZ0Z3J9
+              </Text>
+            </ScrollView>
           </View>
           {errorMessage ? (
             <Text style={styles.errorText}>{errorMessage}</Text>
