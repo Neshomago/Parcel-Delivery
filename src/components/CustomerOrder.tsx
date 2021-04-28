@@ -5,13 +5,13 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import { handleStatusImages } from '../utils';
 import Colors from '../constants/Colors';
 
-interface Props {
+interface IProps {
   date: string;
   status: string;
   isFirst: boolean;
   isDisabled: boolean;
 }
-const CustomerOrder = ({ date, status, isFirst, isDisabled }: Props) => {
+const CustomerOrder = ({ date, status, isFirst, isDisabled }: IProps) => {
   return (
     <View style={styles.container}>
       {!isFirst && (

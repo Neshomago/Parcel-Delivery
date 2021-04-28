@@ -1,6 +1,5 @@
 import React from 'react';
 import { StatusBar, StyleSheet, Text, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { RouteProp } from '@react-navigation/native';
 
 import Order from '../../components/CustomerOrder';
@@ -8,11 +7,11 @@ import Colors from '../../constants/Colors';
 
 import { StackParams } from '../../navigation/types';
 
-interface Props {
+interface IProps {
   route: RouteProp<StackParams, 'HistoryScreen'>;
 }
 
-const HistoryScreen = ({ route }: Props) => {
+const HistoryScreen = ({ route }: IProps) => {
   const { history } = route.params;
 
   return (

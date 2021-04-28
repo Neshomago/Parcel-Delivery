@@ -13,7 +13,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import Colors from '../constants/Colors';
 
-interface Props {
+interface IProps {
   shown: boolean;
   hideModal: () => void;
   setEncodedUrl: (result: any) => void;
@@ -25,7 +25,7 @@ function FocusAwareStatusBar(props: any) {
   return isFocused ? <StatusBar {...props} /> : null;
 }
 
-const Signature = ({ shown, hideModal, setEncodedUrl }: Props) => {
+const Signature = ({ shown, hideModal, setEncodedUrl }: IProps) => {
   const ref: any = useRef();
 
   const saveImage = () => {

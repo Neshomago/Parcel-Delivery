@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -12,7 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { isOrderDelivered } from '../utils';
 import Colors from '../constants/Colors';
 import { StackParams } from '../navigation/types';
-interface Props {
+interface IProps {
   data: {
     id_cpte: string;
     nombre_cliente: string;
@@ -25,7 +25,7 @@ interface Props {
   navigation: StackNavigationProp<StackParams>;
 }
 
-const ProviderOrder = ({ data, navigation }: Props) => {
+const ProviderOrder = ({ data, navigation }: IProps) => {
   const { id_cpte, nombre_cliente, direccion, nu_paquetes, id_estado } = data;
 
   const handleTouch = (): void => {

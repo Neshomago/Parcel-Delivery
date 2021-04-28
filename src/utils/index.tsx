@@ -1,3 +1,4 @@
+import { ImageSourcePropType } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import preparingImage from '../../assets/preparing.png';
 import deliveringImage from '../../assets/delivering.png';
@@ -11,7 +12,7 @@ export const AUTH_DATA = 'AUTH_DATA';
 export const handleStatusImages = (
   status: string,
   isDisabled: boolean = false,
-): string => {
+): ImageSourcePropType => {
   switch (status) {
     case 'Preparado':
       return preparingImage;

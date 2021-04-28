@@ -1,5 +1,4 @@
 export interface IHistory {
-  id: string;
   fecha: string;
   estado: string;
 }
@@ -22,7 +21,7 @@ export interface IOrder {
 
 export interface IAuthContext {
   errorMessage: string;
-  signin: (username: string, password: string) => void;
+  signin: (username: string, password: string) => Promise<any>;
   signout: () => void;
 }
 
@@ -31,7 +30,7 @@ export type StackParams = {
   StatusScreen: any;
   QRScanner: undefined;
   HistoryScreen: { orderNumber: string; history: IHistory[] };
-  LoginScreen: { user: string };
+  LoginScreen: { userName: string } | any;
   OrdersScreen: { userName: string };
   OrderScreen: { id_cpte: string };
   MapScreen: { orders: IOrder[] };

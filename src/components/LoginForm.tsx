@@ -22,7 +22,7 @@ function FocusAwareStatusBar(props: any) {
   return isFocused ? <StatusBar {...props} /> : null;
 }
 
-interface Props {
+interface IProps {
   onChangeUser: (user: string) => void;
   onChangePassword: (pw: string) => void;
   onSubmit: () => void;
@@ -36,7 +36,7 @@ const LoginScreen = ({
   onSubmit,
   errorMessage,
   isLoading,
-}: Props) => {
+}: IProps) => {
   const [showPassword, setShowPassword] = useState(true);
 
   return (

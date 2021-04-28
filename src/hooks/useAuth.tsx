@@ -6,8 +6,8 @@ import { IAuthContext } from '../navigation/types';
 
 const authContext = createContext<IAuthContext>({
   errorMessage: '',
-  signin: () => {},
-  signout: () => {},
+  signin: (): any => {},
+  signout: (): void => {},
 });
 
 export const AuthProvider: FC = ({ children }) => {
@@ -22,7 +22,7 @@ export const useAuth = () => {
 const useAuthProvider = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
-  const signin = async (userName: string, password: string): Promise<any> => {
+  const signin = async (userName: string, password: string) => {
     try {
       const data = await loginService(userName, password);
       if (data) {

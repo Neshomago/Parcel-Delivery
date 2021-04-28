@@ -13,20 +13,15 @@ import { RouteProp } from '@react-navigation/native';
 import { handleStatusImages } from '../../utils';
 import { API_URL } from '../../services';
 import Colors from '../../constants/Colors';
-import { StackParams } from '../../navigation/types';
+import { StackParams, IHistory } from '../../navigation/types';
 
-interface Props {
+interface IProps {
   navigation: StackNavigationProp<StackParams>;
   route: RouteProp<StackParams, 'MainScreen'>;
 }
-interface History {
-  fecha: string;
-  estado: string;
-}
-
-const StatusScreen = ({ navigation, route }: Props) => {
+const StatusScreen = ({ navigation, route }: IProps) => {
   const [orderNumber, setOrderNumber] = useState('');
-  const [history, setHistory] = useState<History[]>([]);
+  const [history, setHistory] = useState<IHistory[]>([]);
 
   const orderStatus = history[history.length - 1]?.estado; // :/
   const providerID = orderNumber?.slice(0, 4);

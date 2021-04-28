@@ -9,12 +9,12 @@ import { isOrderDelivered } from '../../utils';
 import Colors from '../../constants/Colors';
 import { StackParams } from '../../navigation/types';
 
-interface Props {
+interface IProps {
   route: RouteProp<StackParams, 'MapScreen'>;
   navigation: StackNavigationProp<StackParams>;
 }
 
-const MapScreen = ({ navigation, route }: Props) => {
+const MapScreen = ({ navigation, route }: IProps) => {
   const { orders } = route.params;
 
   const handleTouch = (id_cpte: string): void => {
@@ -37,8 +37,8 @@ const MapScreen = ({ navigation, route }: Props) => {
         initialRegion={{
           latitude: parseFloat(orders[0].latitud),
           longitude: parseFloat(orders[0].longitud),
-          latitudeDelta: 0.0112, //Check this values. Marker is not being centered properly
-          longitudeDelta: 0.0075, //Check this values. Marker is not being centered properly
+          latitudeDelta: 0.0112,
+          longitudeDelta: 0.0075,
         }}>
         {orders.map((order) => (
           <Marker

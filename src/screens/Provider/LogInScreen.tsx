@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import { getDataFromStorage, deleteStorageData } from '../../utils';
 import LoginForm from '../../components/LoginForm';
-import { useAuth, AUTH_DATA } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { StackParams } from '../../navigation/types';
 
-interface Props {
+interface IProps {
   navigation: StackNavigationProp<StackParams>;
 }
 
-const LogInScreen = ({ navigation }: Props) => {
-  const [userName, setUserName] = useState('arce');
-  const [password, setPassword] = useState('arce');
+const LogInScreen = ({ navigation }: IProps) => {
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -25,7 +24,7 @@ const LogInScreen = ({ navigation }: Props) => {
     setPassword(pw);
   };
 
-  const onSubmit = () => {
+  const onSubmit = (): void => {
     if (!userName || !password) {
       setErrorMessage('Ingrese usuario y contraseña');
       return;
@@ -47,13 +46,6 @@ const LogInScreen = ({ navigation }: Props) => {
   useEffect(() => {
     auth.errorMessage && setErrorMessage(auth.errorMessage);
   }, [auth.errorMessage]);
-
-  useEffect(() => {
-    deleteStorageData();
-    // getDataFromStorage(AUTH_DATA)
-    //   .then((res) => console.log('TK', res.data))
-    //   .catch((err) => console.log('TKERR', err));
-  }, []);
 
   return (
     <LoginForm

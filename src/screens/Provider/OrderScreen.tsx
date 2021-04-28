@@ -24,12 +24,12 @@ import { getProviderOrder, updateProviderOrder } from '../../services';
 import { StackParams, IOrder } from '../../navigation/types';
 import Dropdown from '../../components/Dropdown';
 
-interface Props {
+interface IProps {
   route: RouteProp<StackParams, 'OrderScreen'>;
   navigation: StackNavigationProp<StackParams>;
 }
 
-const OrderScreen = ({ navigation, route }: Props) => {
+const OrderScreen = ({ navigation, route }: IProps) => {
   const [orderData, setOrderData] = useState<IOrder>({
     id_cpte: '',
     nombre_cliente: '',
@@ -71,12 +71,9 @@ const OrderScreen = ({ navigation, route }: Props) => {
   const getOrder = async () => {
     const storageData = await getDataFromStorage(AUTH_DATA);
 
-    const { data, status: statusCode } = await getProviderOrder(
-      id_cpte,
-      storageData?.jwt,
-    );
+    const { data } = await getProviderOrder(id_cpte, storageData?.jwt);
     if (!data) {
-      console.error('Error getting order. Status code: ', statusCode);
+      setErrorMessage('Error obteniendo orden');
       return;
     }
     setOrderData(data);

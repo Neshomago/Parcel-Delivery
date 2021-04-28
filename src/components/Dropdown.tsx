@@ -3,12 +3,12 @@ import { StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Colors from '../constants/Colors';
 
-interface Props {
+interface IProps {
   status: string;
   setStatus: Dispatch<SetStateAction<string>>;
 }
 
-const Dropdown = ({ status, setStatus }: Props) => {
+const Dropdown = ({ status, setStatus }: IProps) => {
   return (
     <Picker
       style={styles.picker}

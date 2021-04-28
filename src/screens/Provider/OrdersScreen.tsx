@@ -21,7 +21,7 @@ import Colors from '../../constants/Colors';
 import UserConfig from '../../components/UserConfig';
 import { StackParams, IOrder } from '../../navigation/types';
 
-interface Props {
+interface IProps {
   route: RouteProp<StackParams, 'OrdersScreen'>;
   navigation: StackNavigationProp<StackParams>;
 }
@@ -32,7 +32,7 @@ function FocusAwareStatusBar(props: any) {
   return isFocused ? <StatusBar {...props} /> : null;
 }
 
-const OrdersScreen = ({ navigation, route }: Props) => {
+const OrdersScreen = ({ navigation, route }: IProps) => {
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');

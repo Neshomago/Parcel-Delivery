@@ -26,12 +26,12 @@ function FocusAwareStatusBar(props: any) {
   return isFocused ? <StatusBar {...props} /> : null;
 }
 
-interface Props {
+interface IProps {
   navigation: StackNavigationProp<StackParams>;
   isProvider: boolean;
 }
 
-const QRScanner = ({ navigation, isProvider = false }: Props) => {
+const QRScanner = ({ navigation, isProvider = false }: IProps) => {
   const [isTorchOn, setTorchOn] = useState(false);
 
   const handleDataSend = (data: object) => {
@@ -60,7 +60,7 @@ const QRScanner = ({ navigation, isProvider = false }: Props) => {
         showMarker={true}
         reactivate={true}
         reactivateTimeout={3000}
-        cameraStyle={{ height: height }}
+        cameraStyle={{ height }}
         cameraProps={{
           flashMode: isTorchOn
             ? Camera.Constants.FlashMode.torch

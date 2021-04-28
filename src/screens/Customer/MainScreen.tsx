@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   Image,
   Keyboard,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -28,17 +27,11 @@ function FocusAwareStatusBar(props: any) {
   return isFocused ? <StatusBar {...props} /> : null;
 }
 
-// 004703000X000500003160
-// 004803000X000500003152
-// 004803000X00025XZ0ZBEW
-// 004703000X00025XZ0Z94H
-// 004703000X00025XZ0Z3J9
-
-interface Props {
+interface IProps {
   navigation: StackNavigationProp<StackParams>;
 }
 
-const MainScreen = ({ navigation }: Props) => {
+const MainScreen = ({ navigation }: IProps) => {
   const [orderId, setOrderId] = useState('004703000X000500003160');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -49,7 +42,7 @@ const MainScreen = ({ navigation }: Props) => {
   };
 
   const handleSubmit = async () => {
-    // if (!orderId || orderId.length < 22) return;
+    if (!orderId || orderId.length < 22) return;
     setIsLoading(true);
     try {
       const { data } = await getUserOrder(orderId);
@@ -61,7 +54,7 @@ const MainScreen = ({ navigation }: Props) => {
     setIsLoading(false);
   };
 
-  const handleQRPress = () => {
+  const handleQRPress = (): void => {
     navigation.navigate('QRScanner');
   };
   useEffect(() => {
@@ -117,31 +110,6 @@ const MainScreen = ({ navigation }: Props) => {
                 />
               </View>
             </TouchableOpacity>
-            <ScrollView>
-              <Text
-                style={{
-                  marginTop: 10,
-                  color: 'white',
-                  fontSize: 18,
-                  lineHeight: 25,
-                  textAlign: 'center',
-                }}>
-                Ordenes de prueba:
-              </Text>
-              <Text
-                selectable
-                style={{
-                  marginTop: 10,
-                  color: Colors.lightGreen,
-                  fontSize: 18,
-                  lineHeight: 30,
-                  textAlign: 'center',
-                }}>
-                004703000X000500003160 004803000X000500003152
-                004803000X00025XZ0ZBEW 004703000X00025XZ0Z94H
-                004703000X00025XZ0Z3J9
-              </Text>
-            </ScrollView>
           </View>
           {errorMessage ? (
             <Text style={styles.errorText}>{errorMessage}</Text>
@@ -162,8 +130,8 @@ const styles = StyleSheet.create({
 
   logoContainer: {
     width: '90%',
-    marginTop: 100,
-    marginBottom: 100,
+    marginTop: 60,
+    marginBottom: 20,
   },
 
   logo: {
