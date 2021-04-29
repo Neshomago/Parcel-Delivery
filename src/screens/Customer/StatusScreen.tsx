@@ -23,7 +23,7 @@ const StatusScreen = ({ navigation, route }: IProps) => {
   const [orderNumber, setOrderNumber] = useState('');
   const [history, setHistory] = useState<IHistory[]>([]);
 
-  const orderStatus = history[history.length - 1]?.estado; // :/
+  const orderStatus = history[history.length - 1]?.estado;
   const providerID = orderNumber?.slice(0, 4);
 
   const handleSubmit = (): void => {

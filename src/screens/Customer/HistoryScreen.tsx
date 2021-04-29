@@ -4,8 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 
 import Order from '../../components/CustomerOrder';
 import Colors from '../../constants/Colors';
-
-import { StackParams } from '../../navigation/types';
+import { StackParams, IHistory } from '../../navigation/types';
 
 interface IProps {
   route: RouteProp<StackParams, 'HistoryScreen'>;
@@ -23,11 +22,11 @@ const HistoryScreen = ({ route }: IProps) => {
       />
       <Text style={styles.title}>Historial de pedido</Text>
       <View style={styles.ordersHistory}>
-        {history.map((order: any, index: number) => (
+        {history.map((order: IHistory, index: number) => (
           <Order
-            key={index}
-            date={order?.fecha}
-            status={order?.estado}
+            key={order.fecha}
+            date={order.fecha}
+            status={order.estado}
             isFirst={index === 0}
             isDisabled={false}
           />

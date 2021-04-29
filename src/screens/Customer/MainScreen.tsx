@@ -37,12 +37,14 @@ const MainScreen = ({ navigation }: IProps) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [providerID, setProviderID] = useState('');
 
+  const maxInputLength = 22;
+
   const handleInput = (text: string) => {
     setOrderId(text.replace(/[^0-9a-zA-Z]/g, ''));
   };
 
   const handleSubmit = async () => {
-    if (!orderId || orderId.length < 22) return;
+    if (!orderId || orderId.length < maxInputLength) return;
     setIsLoading(true);
     try {
       const { data } = await getUserOrder(orderId);
@@ -88,7 +90,7 @@ const MainScreen = ({ navigation }: IProps) => {
               value={orderId}
               placeholder="Introduzca su numero de envio"
               placeholderTextColor={Colors.white}
-              maxLength={22}
+              maxLength={maxInputLength}
             />
           </View>
           <View style={styles.buttons}>

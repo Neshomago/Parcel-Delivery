@@ -6,7 +6,6 @@ export interface IHistory {
 export interface IMainScreen {
   data: { id_segui: string; estadoHist: IHistory[] };
 }
-
 export interface IOrder {
   id_cpte: string;
   id_estado: string;

@@ -32,14 +32,6 @@ const ProviderOrder = ({ data, navigation }: IProps) => {
     id_cpte && navigation.navigate('OrderScreen', { id_cpte });
   };
 
-  const handleDeliverColor = (): any => {
-    if (isOrderDelivered(id_estado)) return { color: Colors.lightGreen };
-  };
-
-  const handleIcon = (): any => {
-    if (isOrderDelivered(id_estado)) return 'check-bold';
-  };
-
   return (
     <>
       <StatusBar
@@ -57,13 +49,14 @@ const ProviderOrder = ({ data, navigation }: IProps) => {
           <View style={styles.middleContainer}>
             <Text style={[styles.text, styles.bold]}>{nombre_cliente}</Text>
           </View>
-
           <View style={styles.bottomContainer}>
-            <MaterialCommunityIcons
-              style={[styles.icon, handleDeliverColor()]}
-              name={handleIcon()}
-              size={33}
-            />
+            {isOrderDelivered(id_estado) && (
+              <MaterialCommunityIcons
+                style={styles.icon}
+                name="check-bold"
+                size={33}
+              />
+            )}
             <Text style={styles.text}>{direccion}</Text>
             <View style={styles.bottomRightContainer}>
               <MaterialCommunityIcons
@@ -135,6 +128,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 5,
     left: 0,
+    color: Colors.lightGreen,
   },
 
   bottomRightContainer: {

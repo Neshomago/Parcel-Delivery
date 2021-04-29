@@ -56,7 +56,7 @@ export const deleteStorageData = async (): Promise<any> => {
   }
 };
 
-export const isOrderDelivered = (status: string) =>
+export const isOrderDelivered = (status: string): boolean =>
   status === ('4' || '5' || '9' || '18' || '21' || '24');
 
 export const parseCodeToStatus = (
