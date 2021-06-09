@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 
 import Order from '../../components/CustomerOrder';
@@ -21,17 +21,17 @@ const HistoryScreen = ({ route }: IProps) => {
         translucent={true}
       />
       <Text style={styles.title}>Historial de pedido</Text>
-      <View style={styles.ordersHistory}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {history.map((order: IHistory, index: number) => (
           <Order
-            key={order.fecha}
+            key={order.id}
             date={order.fecha}
             status={order.estado}
             isFirst={index === 0}
             isDisabled={false}
           />
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };

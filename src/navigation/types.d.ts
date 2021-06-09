@@ -1,4 +1,5 @@
 export interface IHistory {
+  id: string;
   fecha: string;
   estado: string;
 }
