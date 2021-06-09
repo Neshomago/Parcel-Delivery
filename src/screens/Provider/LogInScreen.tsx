@@ -9,7 +9,7 @@ interface IProps {
   navigation: StackNavigationProp<StackParams>;
 }
 
-const LogInScreen = ({ navigation }: IProps) => {
+const LoginScreen = ({ navigation }: IProps) => {
   const [userName, setUserName] = useState('arce');
   const [password, setPassword] = useState('arce');
   const [isLoading, setIsLoading] = useState(false);
@@ -58,4 +58,4 @@ const LogInScreen = ({ navigation }: IProps) => {
   );
 };
 
-export default LogInScreen;
+export default LoginScreen;
