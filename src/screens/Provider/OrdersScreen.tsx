@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp, useIsFocused } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 
 import { useAuth } from '../../hooks/useAuth';
 import { getDataFromStorage, AUTH_DATA } from '../../utils';
@@ -42,7 +43,13 @@ const OrdersScreen = ({ navigation, route }: IProps) => {
 
   const handleLogout = () => {
     auth.signout();
-    navigation.navigate('LoginScreen');
+
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'MainScreen' }],
+      }),
+    );
   };
 
   const getOrders = async () => {
