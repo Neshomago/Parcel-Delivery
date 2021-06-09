@@ -3,14 +3,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 
-import { StackParams, IOrder } from '../navigation/types';
+import { IOrder } from '../navigation/types';
 
 import Colors from '../constants/Colors';
 
 interface IProps {
-  //   navigation: StackNavigationProp<StackParams>;
   isConfigOpen: boolean;
   setConfigOpen: (isConfigOpen: boolean) => void;
   orders: IOrder[];
@@ -18,7 +16,6 @@ interface IProps {
 }
 
 const ProviderTopBar = ({
-  //   navigation,
   isConfigOpen,
   setConfigOpen,
   orders,
