@@ -94,7 +94,6 @@ const LoginScreen = ({
           {errorMessage ? (
             <Text style={styles.errorText}>{errorMessage}</Text>
           ) : null}
-          {isLoading ? <ActivityIndicator size="large" color="#fff" /> : null}
           <>
             <Text
               style={{
@@ -130,6 +129,7 @@ const LoginScreen = ({
             </Text>
           </>
         </View>
+        {isLoading ? <ActivityIndicator size="large" color="#fff" /> : null}
       </ImageBackground>
     </View>
   );

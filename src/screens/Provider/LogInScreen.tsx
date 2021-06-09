@@ -24,7 +24,7 @@ const LogInScreen = ({ navigation }: IProps) => {
     setPassword(pw);
   };
 
-  const onSubmit = (): void => {
+  const onSubmit = async () => {
     if (!userName || !password) {
       setErrorMessage('Ingrese usuario y contraseña');
       return;
@@ -32,7 +32,7 @@ const LogInScreen = ({ navigation }: IProps) => {
 
     setIsLoading(true);
 
-    auth
+    await auth
       .signin(userName, password)
       .then(
         (data: any) =>
