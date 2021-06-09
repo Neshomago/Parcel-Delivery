@@ -10,8 +10,8 @@ interface IProps {
 }
 
 const LogInScreen = ({ navigation }: IProps) => {
-  const [userName, setUserName] = useState('');
-  const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState('arce');
+  const [password, setPassword] = useState('arce');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
