@@ -41,10 +41,14 @@ const MainScreen = ({ navigation }: IProps) => {
 
   const handleInput = (text: string) => {
     setOrderId(text.replace(/[^0-9a-zA-Z]/g, ''));
+    setErrorMessage('');
   };
 
   const handleSubmit = async () => {
-    if (!orderId || orderId.length < maxInputLength) return;
+    if (!orderId || orderId.length < maxInputLength) {
+      setErrorMessage('El pedido debe contener 22 caracteres');
+      return;
+    }
     setIsLoading(true);
     try {
       const { data } = await getUserOrder(orderId);
@@ -188,7 +192,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignSelf: 'center',
     padding: 20,
-    marginTop: 20,
+    marginVertical: 20,
   },
 
   iconContainer: {
